@@ -158,8 +158,8 @@ export AWS_SECRET_ACCESS_KEY='<PERMANENT_SECRET_KEY>'
 eval $(aws-auth --serial-number arn:aws:iam::123456789011:mfa/jondoe --token-code 123456)
 ```
 
-If you store your secrets in a CLI-friendly password manager, such as [pass](https://www.passwordstore.org/), then you
-can reduce this even further!
+If you store your secrets in a CLI-friendly password manager, such as [pass](https://www.passwordstore.org/) or [lpass](https://github.com/lastpass/lastpass-cli), then you
+can reduce this even further! Instructions on how to set this up for Lastpass / `lpass` can be found [here](https://github.com/gruntwork-io/module-security-public/blob/master/modules/aws-auth/AWS-AUTH-LASTPASS.md).
 
 First, store your permanent AWS credentials in `pass`:
 

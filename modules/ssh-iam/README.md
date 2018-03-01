@@ -52,6 +52,9 @@ gruntwork-install --binary-name ssh-iam --repo https://github.com/gruntwork-io/m
 Alternatively, you can download the binary from the [Releases
 Page](https://github.com/gruntwork-io/module-security-public/releases).
 
+**Note**: On systems with SELinux, such as CentOS, you'll also need to install the [ssh-iam-selinux-policy 
+module](/modules/ssh-iam-selinux-policy).
+
 Once the binary is on the server, run the `install` command:
 
 ```
