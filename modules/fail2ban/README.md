@@ -6,7 +6,7 @@ If you're not a customer, contact us at <info@gruntwork.io> or <http://www.grunt
 # Fail2Ban Module
 
 This module can configure a Linux server to automatically ban malicious ip addresses from connecting to the server
-via SSH. This module currently supports Ubuntu and Amazon Linux (using [fail2ban](https://www.fail2ban.org)).
+via SSH. This module currently supports Ubuntu, Amazon Linux, and CentOS (using [fail2ban](https://www.fail2ban.org)).
 
 The module also optionally creates CloudWatch Metrics to track the number of Banned and Unbanned IP Addresses per AWS 
 Instance.

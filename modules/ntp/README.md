@@ -13,6 +13,7 @@ This script currently works on:
 
 * Ubuntu
 * Amazon Linux (currently a no-op, since Amazon Linux already has NTP installed & configured)
+* CentOS
 
 
 

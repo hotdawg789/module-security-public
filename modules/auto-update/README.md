@@ -5,9 +5,10 @@ If you're not a customer, contact us at <info@gruntwork.io> or <http://www.grunt
 
 # Auto Update Module
 
-This module can configure a Linux server to automatically install security updates. This module currently supports
-Ubuntu 14.04/16.04 (using [unattended-upgrades](https://help.ubuntu.com/lts/serverguide/automatic-updates.html)) and
-Amazon Linux (using [yum-cron](http://man7.org/linux/man-pages/man8/yum-cron.8.html)).
+This module can configure a Linux server to automatically install security updates. This module currently supports:
+
+* Ubuntu 14.04/16.04 (using [unattended-upgrades](https://help.ubuntu.com/lts/serverguide/automatic-updates.html))
+* Amazon Linux and CentOS (using [yum-cron](http://man7.org/linux/man-pages/man8/yum-cron.8.html)).
 
 ## How do you use this module?
 
@@ -48,9 +49,9 @@ a custom configuration, you can use the `--unattended-upgrades-config` option wh
 (if you're using `gruntwork-install`, you'll need to use the `--module-param` option, such as
 `gruntwork-install --module auto-update --module-param unattended-upgrades-config=/foo/bar/my_unattended_upgrades_config`).
 
-#### Amazon Linux Support
+#### Amazon Linux and CentOS Support
 
-On Amazon Linux, we use [yum-cron](http://man7.org/linux/man-pages/man8/yum-cron.8.html) and
+On Amazon Linux and CentOS, we use [yum-cron](http://man7.org/linux/man-pages/man8/yum-cron.8.html) and
 [yum-security](http://linux.die.net/man/8/yum-security) to automatically install updates. Note that Amazon Linux
 automatically installs [security updates at launch
 time](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonLinuxAMIBasics.html#security-updates), but if you don't
@@ -73,8 +74,8 @@ configuration, you can use the `--yum-cron-config` option when installing the `a
 ## Limitations
 
 * This module only updates software installed on your servers using the default package manager (`apt` for Ubuntu,
-  `yum` for Amazon Linux). Any software you install through other means, such as downloading binaries through `curl` or
-  using an alternate package manager (e.g. `gem`, `npm`, `nix`, etc) will NOT be updated.
+  `yum` for Amazon Linux and CentOS). Any software you install through other means, such as downloading binaries 
+  through `curl` or using an alternate package manager (e.g. `gem`, `npm`, `nix`, etc) will NOT be updated.
 * The default configuration only installs security updates. Other types of bug fixes, even serious, but not-security
   sensitive ones, will NOT be installed automatically.
 * The default configuration of this module does NOT reboot your servers automatically. This helps avoid unexpected

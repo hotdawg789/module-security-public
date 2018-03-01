@@ -7,7 +7,7 @@ If you're not a customer, contact us at <info@gruntwork.io> or <http://www.grunt
 
 This is an example of how to use the [auto-update module](/modules/auto-update) to configure a Linux server to
 automatically install security updates. The example contains a [Packer](https://www.packer.io/) template that creates
-Ubuntu and Amazon Linux AMIs and runs `configure-auto-update` on them.
+Ubuntu, Amazon Linux, and CentOS AMIs and runs `configure-auto-update` on them.
 
 ## Quick start
 
