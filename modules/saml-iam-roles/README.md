@@ -24,17 +24,21 @@ To set up SAML access to AWS, you need to:
 
 This module takes care of [creating IAM roles](#create-iam-roles) and [creating the appropriate permissions](#create-permissions-to-assume-the-iam-roles-in-other-accounts) 
 
-### Create Identity Provider
+### Create Identity Provider in IAM
 
 If you want to allow users of a SAML Identity Provider (IdP) to access your AWS accounts, you will first need to create
 a SAML Identity Provider within IAM. Check out the [saml-iam-roles 
 example](/examples/saml-iam-roles) for a working sample code of how to use this module.
+
+You will also have to configure your IdP to send the appropriate assertions as described in the
+[AWS Documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_saml_assertions.html).
 
 ### Create IAM roles in each account
 
 If you want to allow users from SAML IdPs to access your AWS accounts, use this module in each AWS account to create IAM 
 roles that specify which services those users may access. Check out the [saml-iam-roles 
 example](/examples/saml-iam-roles) for a working sample code of how to use this module.
+
 
 ### Create permissions to assume the IAM roles in other accounts
 
