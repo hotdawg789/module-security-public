@@ -45,6 +45,7 @@ Next, you have to copy and paste each part of that JSON output into the proper e
 export AWS_ACCESS_KEY_ID='AAA'
 export AWS_SECRET_ACCESS_KEY='BBB'
 export AWS_SESSION_TOKEN='CCC'
+export AWS_SESSION_EXPIRATION='DDD'
 ```
 
 If you want to assume an IAM role, you have to make another API call:
@@ -72,6 +73,7 @@ Which you again have to copy into the proper environment variable:
 export AWS_ACCESS_KEY_ID='EEE'
 export AWS_SECRET_ACCESS_KEY='FFF'
 export AWS_SESSION_TOKEN='GGG'
+export AWS_SESSION_EXPIRATION='HHH'
 ```
 
 With this script, all of this can be done in a single command!
@@ -129,7 +131,10 @@ aws-auth --serial-number arn:aws:iam::123456789011:mfa/jondoe --token-code 12345
 export AWS_ACCESS_KEY_ID='AAA'
 export AWS_SECRET_ACCESS_KEY='BBB'
 export AWS_SESSION_TOKEN='CCC'
+export AWS_SESSION_EXPIRATION='DDD'
 ```
+
+**NOTE**: `AWS_SESSION_EXPIRATION` environment variable is not used by any official libraries (i.e. aws cli, boto, etc.). It's only exported for your convenience, for example a wrapper that renews once expired.
 
 To setup your AWS environment variables in one command, all you have to do is eval the result!
 
