@@ -24,8 +24,20 @@ The complete example of using terraform to deploy a generated AMI into your AWS 
 
 #### Installation
 
+To use this module, you just need to:
+
+1. Install [bash-commons](https://github.com/gruntwork-io/bash-commons) on your servers.
+1. Install the `ip-lockdown` script on your servers.
+
+The best way to do that is to use the [Gruntwork Installer](https://github.com/gruntwork-io/gruntwork-installer) in a
+[Packer](https://www.packer.io/) template (make sure to replace `<BASH_COMMONS_VERSION>` and
+`<MODULE_SECURITY_VERSION>` below with the latest versions from the [bash-commons releases
+page](https://github.com/gruntwork-io/bash-commons/releases) and [module-security releases
+page](https://github.com/gruntwork-io/module-security-public/releases), respectively):
+
 ```
-gruntwork-install --module-name ip-lockdown --tag v0.0.1 --repo https://github.com/gruntwork-io/module-security
+gruntwork-install --module-name bash-commons --tag <BASH_COMMONS_VERSION> --repo https://github.com/gruntwork-io/bash-commons
+gruntwork-install --module-name ip-lockdown --tag <MODULE_SECURITY_VERSION> --repo https://github.com/gruntwork-io/module-security
 ```
 
 |Option|Description|Required|Example|

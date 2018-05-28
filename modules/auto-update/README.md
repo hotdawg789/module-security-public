@@ -8,7 +8,7 @@ If you're not a customer, contact us at <info@gruntwork.io> or <http://www.grunt
 This module can configure a Linux server to automatically install security updates. This module currently supports:
 
 * Ubuntu 14.04/16.04 (using [unattended-upgrades](https://help.ubuntu.com/lts/serverguide/automatic-updates.html))
-* Amazon Linux and CentOS (using [yum-cron](http://man7.org/linux/man-pages/man8/yum-cron.8.html)).
+* Amazon Linux, Amazon Linux 2, and CentOS (using [yum-cron](http://man7.org/linux/man-pages/man8/yum-cron.8.html)).
 
 ## How do you use this module?
 
@@ -18,12 +18,20 @@ See the [auto-update example](/examples/auto-update) for an example of how to us
 
 #### Installation
 
-To use this module, you just need to install and run the `configure-auto-update` script on your servers. The best way
-to do that is to use the [Gruntwork Installer](https://github.com/gruntwork-io/gruntwork-installer) in a
-[Packer](https://www.packer.io/) template:
+To use this module, you just need to:
+
+1. Install [bash-commons](https://github.com/gruntwork-io/bash-commons) on your servers.
+1. Install and run the `configure-auto-update` script on your servers.
+
+The best way to do that is to use the [Gruntwork Installer](https://github.com/gruntwork-io/gruntwork-installer) in a
+[Packer](https://www.packer.io/) template (make sure to replace `<BASH_COMMONS_VERSION>` and
+`<MODULE_SECURITY_VERSION>` below with the latest versions from the [bash-commons releases
+page](https://github.com/gruntwork-io/bash-commons/releases) and [module-security releases
+page](https://github.com/gruntwork-io/module-security-public/releases), respectively):
 
 ```
-gruntwork-install --module-name auto-update --tag v0.0.2 --repo https://github.com/gruntwork-io/module-security
+gruntwork-install --module-name bash-commons --tag <BASH_COMMONS_VERSION> --repo https://github.com/gruntwork-io/bash-commons
+gruntwork-install --module-name auto-update --tag <MODULE_SECURITY_VERSION> --repo https://github.com/gruntwork-io/module-security
 ```
 
 #### Ubuntu support

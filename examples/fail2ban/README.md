@@ -7,7 +7,7 @@ If you're not a customer, contact us at <info@gruntwork.io> or <http://www.grunt
 
 This is an example of how to use the [fail2ban module](/modules/fail2ban) to configure a Linux server to
 automatically ban malicious ip addresses. The example contains a [Packer](https://www.packer.io/) template that creates
-either an Ubuntu or Amazon Linux AMI and installs and configures `fail2ban` on them.
+either an Ubuntu, Amazon Linux, Amazon Linux 2, or CentOS AMI and installs and configures `fail2ban` on them.
 
 ## Quick start
 

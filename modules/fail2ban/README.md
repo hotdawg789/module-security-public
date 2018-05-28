@@ -6,7 +6,8 @@ If you're not a customer, contact us at <info@gruntwork.io> or <http://www.grunt
 # Fail2Ban Module
 
 This module can configure a Linux server to automatically ban malicious ip addresses from connecting to the server
-via SSH. This module currently supports Ubuntu, Amazon Linux, and CentOS (using [fail2ban](https://www.fail2ban.org)).
+via SSH. This module currently supports Ubuntu, Amazon Linux, Amazon Linux 2, and CentOS (using
+[fail2ban](https://www.fail2ban.org)).
 
 The module also optionally creates CloudWatch Metrics to track the number of Banned and Unbanned IP Addresses per AWS 
 Instance.
@@ -19,8 +20,20 @@ See the [fail2ban example](/examples/fail2ban) for an example of how to use this
 
 #### Installation
 
+To use this module, you just need to:
+
+1. Install [bash-commons](https://github.com/gruntwork-io/bash-commons) on your servers.
+1. Install the `fail2ban` module on your servers.
+
+The best way to do that is to use the [Gruntwork Installer](https://github.com/gruntwork-io/gruntwork-installer) in a
+[Packer](https://www.packer.io/) template (make sure to replace `<BASH_COMMONS_VERSION>` and
+`<MODULE_SECURITY_VERSION>` below with the latest versions from the [bash-commons releases
+page](https://github.com/gruntwork-io/bash-commons/releases) and [module-security releases
+page](https://github.com/gruntwork-io/module-security-public/releases), respectively):
+
 ```
-gruntwork-install --module-name fail2ban --tag v0.0.1 --repo https://github.com/gruntwork-io/module-security
+gruntwork-install --module-name bash-commons --tag <BASH_COMMONS_VERSION> --repo https://github.com/gruntwork-io/bash-commons
+gruntwork-install --module-name fail2ban --tag <MODULE_SECURITY_VERSION> --repo https://github.com/gruntwork-io/module-security
 ```
 
 #### Configuration Options
