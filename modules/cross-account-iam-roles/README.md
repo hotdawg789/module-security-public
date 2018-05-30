@@ -71,6 +71,14 @@ In account A, do the following:
 
 This module creates the following IAM roles (all optional):
 
+
+### IAM Roles intended for human users
+
+These IAM Roles are intended to be assumed by human users (i.e., IAM Users in another AWS account). The default
+maximum session expiration for these roles is 12 hours (configurable via the `var.max_session_duration_human_users`).
+Note that these are the *maximum* session expirations; the actual value for session expiration is specified when
+making API calls to assume the IAM role (see [aws-auth](/modules/aws-auth)).
+
 * **allow-read-only-access-from-other-accounts**: Users from the accounts in 
   `var.allow_read_only_access_from_other_account_arns` will get read-only access to all services in this account.
 
@@ -78,18 +86,26 @@ This module creates the following IAM roles (all optional):
   `var.allow_billing_access_from_other_account_arns` will get full (read and write) access to the billing details for 
   this account.
 
-* **allow-ssh-iam-access-from-other-accounts**: Users (or more likely, EC2 Instances) from the accounts in 
-  `var.allow_ssh_iam_access_from_other_account_arns` will get read access to IAM Groups and public SSH keys. This is
-  useful to allow [ssh-iam](/modules/ssh-iam) running on EC2 Instances in other AWS accounts to validate SSH 
-  connections against IAM users defined in this AWS account.
-
-* **allow-dev-access-from-other-accounts**: Users from the accounts in `var.allow_dev_access_from_other_account_arns` 
+* **allow-dev-access-from-other-accounts**: Users from the accounts in `var.allow_dev_access_from_other_account_arns`
   will get full (read and write) access to the services in this account specified in `var.dev_permitted_services`.
 
 * **allow-full-access-from-other-accounts**: Users from the accounts in `var.allow_full_access_from_other_account_arns` 
   will get full (read and write) access to all services in this account.
-  
-* **allow-auto-deploy-access-from-other-accounts**: Users from the accounts in `var.allow_auto_deploy_from_other_account_arns` 
+
+
+### IAM Roles intended for machine users
+
+These IAM Roles are intended to be assumed by machine users (i.e., an EC2 Instance in another AWS account). The default
+maximum session expiration for these roles is 1 hour (configurable via the `var.max_session_duration_machine_users`).
+Note that these are the *maximum* session expirations; the actual value for session expiration is specified when
+making API calls to assume the IAM role (see [aws-auth](/modules/aws-auth)).
+
+* **allow-ssh-iam-access-from-other-accounts**: Users (or more likely, EC2 Instances) from the accounts in
+  `var.allow_ssh_iam_access_from_other_account_arns` will get read access to IAM Groups and public SSH keys. This is
+  useful to allow [ssh-iam](/modules/ssh-iam) running on EC2 Instances in other AWS accounts to validate SSH
+  connections against IAM users defined in this AWS account.
+
+* **allow-auto-deploy-access-from-other-accounts**: Users from the accounts in `var.allow_auto_deploy_from_other_account_arns`
   will get automated deployment access to all services in this account with the permissions specified in 
   `var.auto_deploy_permissions`. The main use case is to allow a CI server (e.g. Jenkins) in another AWS account to do 
   automated deployments in this AWS account.
@@ -114,7 +130,6 @@ Check out the [AWS Switching to a Role (AWS Command Line Interface)
 documentation](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-cli.html). Note that assuming 
 roles with the AWS CLI takes quite a few steps, so use the [aws-auth script](
 https://github.com/gruntwork-io/module-security/tree/master/modules/aws-auth) to reduce it to a one-liner.
-
 
 
 ## Background Information

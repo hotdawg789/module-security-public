@@ -115,6 +115,12 @@ Find the Serial Number ARN by viewing your IAM User profile in the AWS web conso
 aws-auth --serial-number arn:aws:iam::123456789011:mfa/jondoe --token-code 123456 --role-arn arn:aws:iam::123456789011:role/my-role
 ```
 
+#### Assume an IAM Role in another Account and configure the credentials to not expire for 12 hours
+
+```bash
+aws-auth --serial-number arn:aws:iam::123456789011:mfa/jondoe --token-code 123456 --role-arn arn:aws:iam::123456789011:role/my-role --role-duration-seconds 43200
+```
+
 #### Required IAM Policy
 
 You must have the `iam:AssumeRole` permission on the "primary" AWS account in order to assume an IAM Role in a "secondary"
