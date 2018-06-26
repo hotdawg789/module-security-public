@@ -57,9 +57,9 @@ This module creates the following IAM roles (all optional):
   `var.allow_billing_access_from_saml_provider_arns` will get full (read and write) access to the billing details for 
   this account.
 
-* **allow-ssh-iam-access-from-saml**: Users authenticated by the SAML providers in
-  `var.allow_ssh_iam_access_from_saml_provider_arns` will get read access to IAM Groups and public SSH keys. This is
-  useful to allow [ssh-iam](/modules/ssh-iam) running on EC2 Instances in other AWS accounts to validate SSH 
+* **allow-ssh-grunt-access-from-saml**: Users authenticated by the SAML providers in
+  `var.allow_ssh_grunt_access_from_saml_provider_arns` will get read access to IAM Groups and public SSH keys. This is
+  useful to allow [ssh-grunt](/modules/ssh-grunt) running on EC2 Instances in other AWS accounts to validate SSH
   connections against IAM users defined in this AWS account.
 
 * **allow-dev-access-from-saml**:Users authenticated by the SAML providers in

@@ -1,9 +1,8 @@
 **Note**: This public repo contains the documentation for the private GitHub repo <https://github.com/gruntwork-io/module-security>.
 We publish the documentation publicly so it turns up in online searches, but to see the source code, you must be a Gruntwork customer.
-If you're already a Gruntwork customer, the original source for this file is at: <https://github.com/gruntwork-io/module-security/blob/master/modules/ssh-iam/README.md>.
+If you're already a Gruntwork customer, the original source for this file is at: <https://github.com/gruntwork-io/module-security/blob/master/examples/ssh-grunt/houston/README.md>.
 If you're not a customer, contact us at <info@gruntwork.io> or <http://www.gruntwork.io> for info on how to get access!
 
-# ssh-iam has been renamed!
+# SSH Grunt with Houston Example
 
-`ssh-iam` has been renamed to [ssh-grunt](/modules/ssh-grunt). Please update all links to point to
-[ssh-grunt](/modules/ssh-grunt)!
+(TODO: coming soon!)

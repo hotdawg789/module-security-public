@@ -100,9 +100,9 @@ maximum session expiration for these roles is 1 hour (configurable via the `var.
 Note that these are the *maximum* session expirations; the actual value for session expiration is specified when
 making API calls to assume the IAM role (see [aws-auth](/modules/aws-auth)).
 
-* **allow-ssh-iam-access-from-other-accounts**: Users (or more likely, EC2 Instances) from the accounts in
-  `var.allow_ssh_iam_access_from_other_account_arns` will get read access to IAM Groups and public SSH keys. This is
-  useful to allow [ssh-iam](/modules/ssh-iam) running on EC2 Instances in other AWS accounts to validate SSH
+* **allow-ssh-grunt-access-from-other-accounts**: Users (or more likely, EC2 Instances) from the accounts in
+  `var.allow_ssh_grunt_access_from_other_account_arns` will get read access to IAM Groups and public SSH keys. This is
+  useful to allow [ssh-grunt](/modules/ssh-grunt) running on EC2 Instances in other AWS accounts to validate SSH
   connections against IAM users defined in this AWS account.
 
 * **allow-auto-deploy-access-from-other-accounts**: Users from the accounts in `var.allow_auto_deploy_from_other_account_arns`

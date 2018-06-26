@@ -20,9 +20,10 @@ This repo contains modules for setting up best practices for managing secrets, c
   access to the CMK. You can use a CMK to encrypt and decrypt small amounts of data and to generate [Data
   Keys](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#data-keys) that can be used to encrypt and
   decrypt larger amounts of data.
-* [ssh-iam](/modules/ssh-iam): This module contains an app called `ssh-iam` that allows you to manage SSH access to
-  your EC2 Instances using AWS IAM. Developers can upload public SSH Keys to their IAM user accounts and `ssh-iam`
-  will allow them to SSH to EC2 Instances using their IAM user name and SSH key for authentication.
+* [ssh-grunt](/modules/ssh-grunt): This module contains an app called `ssh-grunt` that allows you to manage SSH access
+  to your EC2 Instances using either AWS IAM or Gruntwork Houston. Developers can upload public SSH Keys to an Identity
+  Provider (e.g., AWS IAM or Google) user accounts and `ssh-grunt` will allow them to SSH to EC2 Instances using their
+  Identity Provider user name and SSH key for authentication.
 * [iam-groups](/modules/iam-groups): This Terraform Module creates a best-practices set of IAM Groups that can be used to 
   secure human and machine IAM Users.
 

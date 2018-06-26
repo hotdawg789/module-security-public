@@ -100,7 +100,7 @@ This module creates the following IAM Policy documents:
   certain IAM roles in other AWS accounts (e.g. stage, prod). The documents that are created and which IAM roles they
   have access to is controlled by the variable `var.allow_access_from_other_account_arns`.
 
-- **ssh_iam_permissions**: provides the permissions [ssh-iam](/modules/ssh-iam) needs to validate SSH keys. 
+- **ssh_grunt_permissions**: provides the permissions [ssh-grunt](/modules/ssh-grunt) needs to validate SSH keys.
 
 - **auto_deploy_permissions**: provides the permissions in `var.auto_deploy_permissions` to do automated deployment.
   The primary use case is to add these permissions to the IAM role of a CI server (e.g. Jenkins).

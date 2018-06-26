@@ -54,9 +54,9 @@ This module optionally creates the following IAM Groups:
 - **use-existing-iam-roles:** IAM Users in this group can pass *existing* IAM Roles to AWS resources to which they have 
   been granted access. These IAM Users cannot create *new* IAM Roles, only use existing ones. See 
   [the three levels of IAM permissions](/modules/iam-policies#the-three-levels-of-iam-permissions) for more information.
-- **ssh-iam-sudo-users:** IAM Users in this group have SSH access with `sudo` privileges to any EC2 Instance configured
+- **ssh-grunt-sudo-users:** IAM Users in this group have SSH access with `sudo` privileges to any EC2 Instance configured
   to use this group to manage SSH logins.
-- **ssh-iam-users:** IAM Users in this group have SSH access without `sudo` privileges to any EC2 Instance configured 
+- **ssh-grunt-users:** IAM Users in this group have SSH access without `sudo` privileges to any EC2 Instance configured
   to use this group to manage SSH logins.
 - **cross-account-access:** IAM users in these groups can assume an IAM role in another AWS account. This makes
   [cross-account access](https://aws.amazon.com/blogs/security/enable-a-new-feature-in-the-aws-management-console-cross-account-access/),
