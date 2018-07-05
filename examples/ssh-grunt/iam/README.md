@@ -11,38 +11,16 @@ for how to use `ssh-grunt` with Houston, see the [ssh-grunt Houston example](/ex
 upload your public SSH Key to your IAM user account and `ssh-grunt` will allow you to SSH to the EC2 Instances using
 your IAM user name and SSH key for authentication.
 
-**Note**: To make it possible to run automated tests against this example, we build the `ssh-grunt` binary locally and
-use the Packer `file` provisioner to copy it into our AMI. This is NOT how you would do it in a real-world use case.
-Instead, we recommend using the [Gruntwork installer](https://github.com/gruntwork-io/gruntwork-installer):
 
-```json
-{
-  "type": "shell",
-  "inline": "curl -Ls https://raw.githubusercontent.com/gruntwork-io/gruntwork-installer/master/bootstrap-gruntwork-installer.sh | bash /dev/stdin --version {{user `gruntwork_installer_version`}}"
-},
-{
-  "type": "shell",
-  "inline": [
-    "gruntwork-install --binary-name ssh-grunt --tag v0.13.0 --repo https://github.com/gruntwork-io/module-security",
-    "sudo /usr/local/bin/ssh-grunt iam install --iam-group MyIamGroup --iam-group-sudo MyIamSudoGroup"
-  ],
-  "environment_vars": [
-    "GITHUB_OAUTH_TOKEN={{user `github_auth_token`}}"
-  ]
-}
-```
+
 
 ## Quick start
 
 To try these templates out you must have Terraform and Packer installed:
 
 1. Upload your public SSH Key to IAM as documented in the [ssh-grunt README](/modules/ssh-grunt).
-1. Create two IAM groups: one with IAM users that need SSH access with sudo privileges and one with IAM users that need
-   SSH access without sudo privileges.
-1. Build the `ssh-grunt` binary: `./packer/build-binary.sh`
-1. Build the Packer template under `packer/ssh-grunt.json`, passing the name of the groups you created in the previous
-   step using the `iam_group_sudo` and `iam_group` variables:
-   `packer build -var iam_group_sudo=ssh-sudo-group -var iam_group=ssh-group ssh-grunt.json`.
+1. Build the AMI for `ssh-grunt` with IAM by following the
+   [instructions in the packer folder](/examples/ssh-grunt/packer).
 1. Open `vars.tf`, set the environment variables specified at the top of the file, and fill in any other variables that
    don't have a default, including the ID of the AMI you built in the previous step.
 1. Run `terraform init`.

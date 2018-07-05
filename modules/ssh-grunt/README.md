@@ -119,6 +119,7 @@ If you're using `ssh-grunt` with Houston, run the following:
 ```
 ssh-grunt houston install \
   --houston-url https://houston.your-company.com \
+  --houston-region us-east-1 \
   --ssh-role ssh-role \
   --ssh-role-sudo ssh-role-sudo
 ```
@@ -145,10 +146,10 @@ You need to configure IAM permissions on each server where `ssh-grunt` is runnin
 The IAM permissions you need to configure for `ssh-grunt` depend on whether your infrastructure is deployed in a
 single AWS account or multiple AWS accounts:
 
-1. [Single AWS account](#single-aws-account)
-1. [Multiple AWS accounts](#multiple-aws-accounts)
+1. [Single AWS account with IAM](#single-aws-account-with-iam)
+1. [Multiple AWS accounts with IAM](#multiple-aws-accounts-with-iam)
 
-##### Single AWS account
+##### Single AWS account with IAM
 
 `ssh-grunt` retrieves info from IAM using the AWS API. To use the API, `ssh-grunt` needs:
 
@@ -161,7 +162,7 @@ single AWS account or multiple AWS accounts:
 
 Check out the [ssh-grunt example](/examples/ssh-grunt) for sample code.
 
-##### Multiple AWS accounts
+##### Multiple AWS accounts with IAM
 
 If you have multiple AWS accounts, with all IAM users defined in one account (e.g., the "security" account), and EC2
 Instances running in various other AWS accounts (e.g., the "dev" and "prod" accounts), then you need to give
@@ -219,11 +220,83 @@ input variable.
 
 #### IAM permissions for ssh-grunt with Houston
 
+The IAM permissions you need to configure for `ssh-grunt` depend on whether your infrastructure is deployed in a
+single AWS account or multiple AWS accounts:
+
+1. [Single AWS account with Houston](#single-aws-account-with-houston)
+1. [Multiple AWS accounts with Houston](#multiple-aws-accounts-with-houston)
+
+##### Single AWS account with Houston
+
 Gruntwork Houston runs on top of [API Gateway](https://aws.amazon.com/api-gateway/), so it can control access to the
 SSH endpoints using [IAM permissions](https://docs.aws.amazon.com/apigateway/latest/developerguide/permissions.html).
-`ssh-grunt` needs to have `GET` access to the `get-ssh-users` and `get-ssh-public-keys` endpoints. The [iam-policies
-module](modules/iam-policies) can provide the IAM policy with these permissions for you in the output variable
-`ssh_grunt_houston_permissions`.
+To use the API, `ssh-grunt` needs:
+
+1. AWS credentials: the best way to provide credentials is to attach an [IAM
+   Role](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) to the EC2 Instance.
+1. IAM permissions: `ssh-grunt` needs an [IAM
+   Policy](http://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html) that allows the `GET` access to the
+   `/api/users` endpoint. The [iam-policies module](modules/iam-policies) can provide the IAM policy with these
+   permissions for you in the output variable `ssh_grunt_houston_permissions`.
+
+Check out the [ssh-grunt example](/examples/ssh-grunt) for sample code.
+
+##### Multiple AWS accounts with Houston
+
+If you have multiple AWS accounts, and Houston is deployed in a separate AWS account from where your EC2 Instances
+are running, then you need to give `ssh-grunt` running on those EC2 Instances permissions to access the account where
+Houston is deployed:
+
+1. In the AWS account where Houston is deployed, use the [cross-account-iam-roles
+   module](/modules/cross-account-iam-roles) to create an IAM role that allows your other AWS account(s) to access the
+   Houston SSH APIs  `allow_ssh_grunt_houston_access_from_other_account_arns` input variable. Rough example:
+
+    ```hcl
+    module "cross_account_iam_roles" {
+      source = "git::git@github.com:gruntwork-io/module-security.git//modules/cross-account-iam-roles?ref=v1.0.8"
+
+      allow_ssh_grunt_houston_access_from_other_account_arns = ["arn:aws:iam::123445678910:root"]
+
+      # ... (other params ommitted) ...
+    }
+    ```
+
+1. In the AWS accounts where `ssh-grunt` is running, give the EC2 Instances that run `ssh-grunt` an IAM role that has
+   permissions to assume an IAM role in the Houston account. You can create the IAM policy with this permission using
+   the [iam-policies module](/modules/iam-policies) by specifying the ARN of the IAM role you created in the Houston
+   account in the previous step in the `allow_access_to_other_account_arns` input variable and adding the policy in
+   the `allow_access_to_other_accounts` output variable to the EC2 Instance's IAM role.
+
+    ```hcl
+    module "iam_policies" {
+      source = "git::git@github.com:gruntwork-io/module-security.git//modules/iam-policies?ref=v1.0.8"
+
+      # ssh-grunt is an automated app, so we can't use MFA with it
+      should_require_mfa = false
+      allow_access_to_other_account_arns = ["arn:aws:iam::111111111111:role/allow-ssh-grunt-houston-access-from-other-accounts"]
+      # ... (other params ommitted) ...
+    }
+
+    resource "aws_iam_role_policy" "ssh_grunt_external_account_permissions" {
+      name = "ssh-grunt-external-account-permissions"
+      role = "${module.example_instance.iam_role_id}"
+      policy = "${element(module.iam_policies.allow_access_to_other_accounts, 0)}"
+    }
+    ```
+
+1. When you're calling `ssh-grunt houston install`, pass the ARN of the IAM role from the other account using `--role-arn`
+   argument.
+
+    ```
+    ssh-grunt houston install \
+      --houston-url https://houston.your-company.com \
+      --houston-region us-east-1 \
+      --ssh-role ssh-users \
+      --ssh-role-sudo ssh-sudo-users      \
+      --role-arn arn:aws:iam::111111111111:role/allow-ssh-grunt-houston-access-from-other-accounts
+    ```
+
+Check out the [ssh-grunt example](/examples/ssh-grunt) for sample code.
 
 
 ### Test it out
@@ -448,12 +521,16 @@ Arguments:
 Options:
 
 * `--houston-url` (required): The URL of your Gruntwork Houston deployment.
+* `--houston-region` (required): The AWS region where Gruntwork Houston is deployed.
+* `--role-arn` (optional): Assume this IAM role for all API calls to AWS. This is used primarily when Houston is
+  deployed in another AWS account.
 
 Examples:
 
 ```
 ssh-grunt houston print-keys \
   --houston-url https://houston.your-company.com \
+  --houston-region us-east-1 \
   grunt
 ```
 
@@ -467,11 +544,14 @@ Description: Sync the user accounts on this system with the user accounts that h
 Options:
 
 * `--houston-url` (required): The URL of your Gruntwork Houston deployment.
+* `--houston-region` (required): The AWS region where Gruntwork Houston is deployed.
 * `--ssh-role` (optional): Sync the user accounts on this system with the user accounts that have logged into Houston
   in the last 12 hours with this role. At least one of `--ssh-role` or `--ssh-role-sudo` is required.
 * `--ssh-role-sudo` (optional): Sync the user accounts on this system with the user accounts that have logged into Houston
   in the last 12 hours with this role and give these user accounts sudo privileges. At least one of `--ssh-role` or
   `--ssh-role-sudo` is required.
+* `--role-arn` (optional): Assume this IAM role for all API calls to AWS. This is used primarily when Houston is
+  deployed in another AWS account.
 * `--force-user-deletion` (optional): If this flag is set, delete not only the OS user, but also their home directory
   when that user is removed from an ssh-grunt managed group.
 * `--dry-run` (optional): Print out what this command would do, but don't actually make any changes on this system.
@@ -481,6 +561,7 @@ Examples:
 ```
 ssh-grunt houston sync-users \
   --houston-url https://houston.your-company.com \
+  --houston-region us-east-1 \
   --iam-group ssh-group \
   --iam-group-sudo ssh-sudo-group
 ```
@@ -496,6 +577,7 @@ authenticate SSH connections.
 Options:
 
 * `--houston-url` (required): The URL of your Gruntwork Houston deployment.
+* `--houston-region` (required): The AWS region where Gruntwork Houston is deployed.
 * `--ssh-role` (optional): Sync the user accounts on this system with the user accounts that have logged into Houston
   in the last 12 hours with this role. At least one of `--ssh-role` or `--ssh-role-sudo` is required.
 * `--ssh-role-sudo` (optional): Sync the user accounts on this system with the user accounts that have logged into Houston
@@ -505,6 +587,8 @@ Options:
   Default: `*/30 * * * *` (every 30 minutes).
 * `--authorized-keys-command-user` (optional): The user that should execute the SSH AuthorizedKeysCommand. Default:
   current user.
+* `--role-arn` (optional): Assume this IAM role for all API calls to AWS. This is used primarily when Houston is
+  deployed in another AWS account.
 * `--force-user-deletion` (optional): If this flag is set, delete not only the OS user, but also their home directory
   when that user is removed from an ssh-grunt managed group.
 * `--dry-run` (optional): Print out what this command would do, but don't actually make any changes on this system.
@@ -514,8 +598,9 @@ Examples:
 ```
 ssh-grunt houston install \
   --houston-url https://houston.your-company.com \
-  --iam-group ssh-users \
-  --iam-group-sudo ssh-sudo-users
+  --houston-region us-east-1 \
+  --ssh-role ssh-users \
+  --ssh-role-sudo ssh-sudo-users
 ```
 
 

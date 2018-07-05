@@ -105,6 +105,11 @@ making API calls to assume the IAM role (see [aws-auth](/modules/aws-auth)).
   useful to allow [ssh-grunt](/modules/ssh-grunt) running on EC2 Instances in other AWS accounts to validate SSH
   connections against IAM users defined in this AWS account.
 
+* **allow-ssh-grunt-houston-access-from-other-accounts**: Users (or more likely, EC2 Instances) from the accounts in
+  `var.allow_ssh_grunt_houston_access_from_other_account_arns` will get read access to Gruntwork Houston. This is
+  useful to allow [ssh-grunt](/modules/ssh-grunt) running on EC2 Instances in other AWS accounts to validate SSH
+  connections against Gruntwork Houston running in this AWS account.
+
 * **allow-auto-deploy-access-from-other-accounts**: Users from the accounts in `var.allow_auto_deploy_from_other_account_arns`
   will get automated deployment access to all services in this account with the permissions specified in 
   `var.auto_deploy_permissions`. The main use case is to allow a CI server (e.g. Jenkins) in another AWS account to do 
