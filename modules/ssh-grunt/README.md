@@ -194,7 +194,8 @@ Instances running in various other AWS accounts (e.g., the "dev" and "prod" acco
       source = "git::git@github.com:gruntwork-io/module-security.git//modules/iam-policies?ref=v1.0.8"
     
       # ssh-grunt is an automated app, so we can't use MFA with it
-      should_require_mfa = false
+      trust_policy_should_require_mfa    = false
+      iam_policy_should_require_mfa      = false
       allow_access_to_other_account_arns = ["arn:aws:iam::111111111111:role/allow-ssh-grunt-access-from-other-accounts"]
       # ... (other params ommitted) ...
     }
@@ -272,7 +273,8 @@ Houston is deployed:
       source = "git::git@github.com:gruntwork-io/module-security.git//modules/iam-policies?ref=v1.0.8"
 
       # ssh-grunt is an automated app, so we can't use MFA with it
-      should_require_mfa = false
+      trust_policy_should_require_mfa    = false
+      iam_policy_should_require_mfa      = false
       allow_access_to_other_account_arns = ["arn:aws:iam::111111111111:role/allow-ssh-grunt-houston-access-from-other-accounts"]
       # ... (other params ommitted) ...
     }
