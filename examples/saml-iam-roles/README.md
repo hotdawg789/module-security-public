@@ -5,8 +5,14 @@ If you're not a customer, contact us at <info@gruntwork.io> or <http://www.grunt
 
 # SAML IAM roles example
 
-This is an example of how to use the [saml-iam-roles module](/modules/saml-iam-roles) to create IAM
-roles that users authenticated by a SAML Identity Provider (IdP) can assume to get access to this AWS account.
+This is an example of how to use the [saml-iam-roles module](/modules/saml-iam-roles) to create IAM 
+Roles that users authenticated by a SAML Identity Provider (IdP) can assume to get access to this AWS account.
+
+The saml-iam-roles module creates multiple IAM Roles as described in the [Resources Created section](
+/modules/saml-iam-roles#resources-created) of the module README. For example, a SAML-authenticated user might assume the
+`allow-full-access-from-saml` IAM Role, which grants full access to a given AWS account, or the 
+`allow-read-only-access-from-saml` IAM Role, which grants read-only access to an AWS account. Ultimately, it will be up
+to the SAML IdP to assert which users can assume which IAM Roles in which AWS accounts.
 
 ## Quick start
 
@@ -16,4 +22,4 @@ To try these templates out you must have Terraform installed:
    don't have a default.
 1. Download SAML 2.0 Metadata from your IdP and copy its contents to [saml-metadata.xml](./saml-metadata.xml). 
 1. Run `terraform apply` to create the IAM Roles. 
-1. This module will output the ARNs of these IAM roles
+1. This module will output the ARNs of these IAM Roles.
