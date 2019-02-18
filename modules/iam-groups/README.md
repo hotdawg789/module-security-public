@@ -51,6 +51,8 @@ This module optionally creates the following IAM Groups:
   `var.iam_group_developers_permitted_services`. In addition, these IAM Users have rights to a personal S3 bucket 
   named `<var.iam_group_developers_permitted_services><iam-user-name>`. 
 - **read-only:** IAM Users in this group can read all resources in the AWS account but have no write privileges.
+- **iam-user-self-mgmt:** IAM Group with the `iam-user-self-mgmt` IAM Policy attached. IAM Users in this group have
+  enough permissions to manage their own account (setup MFA, change passwords, etc), but not other IAM Users.
 - **use-existing-iam-roles:** IAM Users in this group can pass *existing* IAM Roles to AWS resources to which they have 
   been granted access. These IAM Users cannot create *new* IAM Roles, only use existing ones. See 
   [the three levels of IAM permissions](/modules/iam-policies#the-three-levels-of-iam-permissions) for more information.
