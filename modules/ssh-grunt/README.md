@@ -157,7 +157,7 @@ single AWS account or multiple AWS accounts:
    Role](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) to the EC2 Instance.
 1. IAM permissions: `ssh-grunt` needs an [IAM
    Policy](http://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html) that allows the `iam:GetGroup`,
-   `iam:ListSSHPublicKeys`, and `iam:GetSSHPublicKey` actions. The [iam-policies module](modules/iam-policies) can 
+   `iam:ListSSHPublicKeys`, and `iam:GetSSHPublicKey` actions. The [iam-policies module](/modules/iam-policies) can 
    provide the IAM policy with these permissions for you in the output variable `ssh_grunt_permissions`.
 
 Check out the [ssh-grunt example](/examples/ssh-grunt) for sample code.
@@ -237,7 +237,7 @@ To use the API, `ssh-grunt` needs:
    Role](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) to the EC2 Instance.
 1. IAM permissions: `ssh-grunt` needs an [IAM
    Policy](http://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html) that allows the `GET` access to the
-   `/api/users` endpoint. The [iam-policies module](modules/iam-policies) can provide the IAM policy with these
+   `/api/users` endpoint. The [iam-policies module](/modules/iam-policies) can provide the IAM policy with these
    permissions for you in the output variable `ssh_grunt_houston_permissions`.
 
 Check out the [ssh-grunt example](/examples/ssh-grunt) for sample code.

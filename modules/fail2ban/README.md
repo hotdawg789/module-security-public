@@ -9,7 +9,7 @@ This module can configure a Linux server to automatically ban malicious ip addre
 via SSH. This module currently supports Ubuntu, Amazon Linux, Amazon Linux 2, and CentOS (using
 [fail2ban](https://www.fail2ban.org)).
 
-The module also optionally creates CloudWatch Metrics to track the number of Banned and Unbanned IP Addresses per AWS 
+The module also optionally creates CloudWatch Metrics to track the number of Banned and Unbanned IP Addresses per AWS
 Instance.
 
 ## How do you use this module?
@@ -36,8 +36,15 @@ gruntwork-install --module-name bash-commons --tag <BASH_COMMONS_VERSION> --repo
 gruntwork-install --module-name fail2ban --tag <MODULE_SECURITY_VERSION> --repo https://github.com/gruntwork-io/module-security
 ```
 
+#### Compatibility
+
+This module is known to work on **Ubuntu** and **Amazon Linux 2**. This does not work with CentOS 7 and Amazon Linux 1.
+
+See https://github.com/gruntwork-io/module-security/issues/89 for more details.
+
 #### Configuration Options
-You can configure several options to control the behavior of fail2ban. If you're using gruntwork-install, you'll need to 
+
+You can configure several options to control the behavior of fail2ban. If you're using gruntwork-install, you'll need to
 use the --module-param option, such as gruntwork-install --module fail2ban --module-param ban-time=3600).
 
 |Option|Description|Required|Default|
@@ -53,15 +60,15 @@ use the --module-param option, such as gruntwork-install --module fail2ban --mod
 |--no-cloudwatch-metrics|Flag to disable creation of cloudwatch metrics|Optional||
 
 #### CloudWatch Metrics
-By default the script will report the count of the number of IP Addresses Banned and Unbanned to the `BannedIPAddresses` 
-and `UnbannedIPAddresses` CloudWatch metrics in the `Gruntwork/Fail2Ban` namespace. This namespace can be changed using 
-the `--cloudwatch-namespace`switch. 
+By default the script will report the count of the number of IP Addresses Banned and Unbanned to the `BannedIPAddresses`
+and `UnbannedIPAddresses` CloudWatch metrics in the `Gruntwork/Fail2Ban` namespace. This namespace can be changed using
+the `--cloudwatch-namespace` switch.
 
-CloudWatch Metric reporting can be disabled all together during installation using the `--no-cloudwatch-metrics` switch.  
+CloudWatch Metric reporting can be disabled all together during installation using the `--no-cloudwatch-metrics` switch.
 
 ##### Permissions
-If the option to install CloudWatch Metrics is selected (default behavior), it is assumed that the EC2 Instance has 
-permissions to publish metric data to the CloudWatch API. This can be done by attaching a policy to the EC2 Instance's 
+If the option to install CloudWatch Metrics is selected (default behavior), it is assumed that the EC2 Instance has
+permissions to publish metric data to the CloudWatch API. This can be done by attaching a policy to the EC2 Instance's
 IAM Role. The permissions necessary are:
 
 ```json
@@ -98,6 +105,44 @@ Data](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html#user-dat
 #!/bin/bash
 /etc/user-data/configure-fail2ban-cloudwatch/configure-fail2ban-cloudwatch.sh --cloudwatch-namespace Acme/Fail2Ban
 ```
+
+##### Default zone for firewalld (Amazon Linux 2 and CentOS)
+
+On Amazon Linux 2 and CentOS, the implementation of `fail2ban` uses `firewalld` to manage the `iptables` for
+implementing the firewall. In a default installation of `firewalld` on these operating systems, all inbound ports are
+blocked on the interfaces except for SSH access. This is caused by the usage of `public` for the configured default
+zone. While this is generally more secure, in practice, this adds a layer of complexity that is typically unnecessary
+due to the usage of cloud based firewalls in the form of Security Groups. For example, this requires configuring the
+firewalld to allow all the applications you expect to expose on the instance, which may be difficult to track in a
+docker cluster like ECS or EKS.
+
+As such, this module updates the default zone of `firewalld` to be `trusted`, which means allow all access by default,
+and have rules added that block specific IPs. This setup is similar to how `fail2ban` works on Ubuntu and Amazon Linux
+1, which use the more traditional approach of setting `iptables` rules directly.
+
+If you wish to revert to the original behavior of `firewalld`, you can update the default zone back to `public` after
+the installation call to `fail2ban`. For example:
+
+```
+# Install fail2ban using Gruntwork modules
+gruntwork-install --module-name bash-commons --tag <BASH_COMMONS_VERSION> --repo https://github.com/gruntwork-io/bash-commons
+gruntwork-install --module-name fail2ban --tag <MODULE_SECURITY_VERSION> --repo https://github.com/gruntwork-io/module-security
+
+# firewalld cannot be configured using `firewall-cmd` unless it is started
+sudo systemctl start firewalld
+
+# Update the default zone back to public, as Gruntwork fail2ban installer will set the default zone to be trusted.
+sudo firewall-cmd --set-default-zone=public
+
+# We stop firewalld at the end to avoid it interfering with additional installation setups.
+sudo systemctl stop firewalld
+```
+
+The above script will:
+
+1. Install `fail2ban` using this module.
+1. Revert the default zone back to `public` after `fail2ban` installation completes, since it is set to `trusted` during
+   the installation step.
 
 #### TODO
 
