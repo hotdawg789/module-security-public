@@ -43,8 +43,8 @@ module "iam_policies" {
   aws_account_id = "123456789012"
   trust_policy_should_require_mfa = true
   iam_policy_should_require_mfa = true
-  iam_group_developers_s3_bucket_prefix = "my-company.dev"
-  iam_group_developers_permitted_services = ["ec2:*"]
+  dev_s3_bucket_prefix = "my-company.dev"
+  dev_permitted_services = ["ec2"]
 }
 ```
 
