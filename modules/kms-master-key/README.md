@@ -28,7 +28,7 @@ after. So please be aware that using this module will cost you money!
 
 ### CMK Administrators vs. CMK Users
  
-This CMK Key Policy declares two levels of access to the CMK:
+This CMK Key Policy declares three levels of access to the CMK:
  
  1. **Key Administrators:** Administrators can *manage* the CMK, including updating the Key Policy, revoking the CMK, and 
     getting additional info about the CMK. Administrators get no permissions to actually use the CMK, for example, with
@@ -36,7 +36,9 @@ This CMK Key Policy declares two levels of access to the CMK:
     
  1. **Key Users:** Users can *use* the CMK for encrypt and decrypt operations but cannot manage it.
  
-You must have at least one IAM ARN for each user type. Note that this ARN can be an IAM User, IAM Group, or IAM Role. 
+ 1. **External Key Users:** Users from external AWS accounts can *use* the CMK for encrypt and decrypt operations but cannot manage it.
+ 
+You must have at least one IAM ARN for **Key Administrators** and **Key Users** user types. **External Key Users** are optional. Note that this ARN can be an IAM User, IAM Group, or IAM Role. 
 
 ## Background
 
