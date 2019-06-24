@@ -3,6 +3,8 @@ We publish the documentation publicly so it turns up in online searches, but to 
 If you're already a Gruntwork customer, the original source for this file is at: <https://github.com/gruntwork-io/module-security/blob/master/README.md>.
 If you're not a customer, contact us at <info@gruntwork.io> or <http://www.gruntwork.io> for info on how to get access!
 
+![Terraform Version](https://img.shields.io/badge/tf-%3E%3D0.12.0-blue.svg)
+
 # Security Modules
 
 This repo contains modules for setting up best practices for managing secrets, credentials, and servers:
