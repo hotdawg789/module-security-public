@@ -110,6 +110,17 @@ The `install` command does two things:
    from the IAM Groups specified via the `--iam-group` and `--iam-group-sudo` option.
 1. Configure SSH to use `ssh-grunt iam print-keys` to authenticate login attempts using public keys in IAM.
 
+You can pass in multiple `--iam-group` and `--iam-group-sudo` to sync users associated with different IAM groups. For
+example, if you ran:
+
+```
+ssh-grunt iam install \
+  --iam-group ssh-group-dev \
+  --iam-group ssh-group-stage
+```
+
+`ssh-grunt` will sync users associated with EITHER the `ssh-group-dev` IAM group or `ssh-group-stage` IAM group.
+
 See the [CLI docs](#cli-docs) for the full list of available options.
 
 #### Install Houston
@@ -168,38 +179,38 @@ If you have multiple AWS accounts, with all IAM users defined in one account (e.
 Instances running in various other AWS accounts (e.g., the "dev" and "prod" accounts), then you need to give
 `ssh-grunt` running on those EC2 Instances permissions to access the account where users and groups are defined:
 
-1. In the AWS account where the IAM users are defined, use the [cross-account-iam-roles 
-   module](/modules/cross-account-iam-roles) to create an IAM role that allows your other AWS account(s) to access IAM 
-   Group and public SSH key info by specifying the ARNs of those other accounts in the 
+1. In the AWS account where the IAM users are defined, use the [cross-account-iam-roles
+   module](/modules/cross-account-iam-roles) to create an IAM role that allows your other AWS account(s) to access IAM
+   Group and public SSH key info by specifying the ARNs of those other accounts in the
    `allow_ssh_grunt_access_from_other_account_arns` input variable. Rough example:
-   
+
     ```hcl
     module "cross_account_iam_roles" {
       source = "git::git@github.com:gruntwork-io/module-security.git//modules/cross-account-iam-roles?ref=v1.0.8"
-    
+
       allow_ssh_grunt_access_from_other_account_arns = ["arn:aws:iam::123445678910:root"]
-   
+
       # ... (other params ommitted) ...
-    }   
+    }
     ```
 
 1. In the AWS accounts where `ssh-grunt` is running, give the EC2 Instances that run `ssh-grunt` an IAM role that has
    permissions to assume an IAM role in the users account. You can create the IAM policy with this permission using
-   the [iam-policies module](/modules/iam-policies) by specifying the ARN of the IAM role you created in the users 
+   the [iam-policies module](/modules/iam-policies) by specifying the ARN of the IAM role you created in the users
    account in the previous step in the `allow_access_to_other_account_arns` input variable and adding the policy in
    the `allow_access_to_other_accounts` output variable to the EC2 Instance's IAM role.
-   
+
     ```hcl
     module "iam_policies" {
       source = "git::git@github.com:gruntwork-io/module-security.git//modules/iam-policies?ref=v1.0.8"
-    
+
       # ssh-grunt is an automated app, so we can't use MFA with it
       trust_policy_should_require_mfa    = false
       iam_policy_should_require_mfa      = false
       allow_access_to_other_account_arns = ["arn:aws:iam::111111111111:role/allow-ssh-grunt-access-from-other-accounts"]
       # ... (other params ommitted) ...
     }
- 
+
     resource "aws_iam_role_policy" "ssh_grunt_external_account_permissions" {
       name = "ssh-grunt-external-account-permissions"
       role = "${module.example_instance.iam_role_id}"
@@ -209,7 +220,7 @@ Instances running in various other AWS accounts (e.g., the "dev" and "prod" acco
 
 1. When you're calling `ssh-grunt iam install`, pass the ARN of the IAM role from the other account using `--role-arn`
    argument.
-   
+
     ```
     ssh-grunt iam install \
       --iam-group ssh-users \
