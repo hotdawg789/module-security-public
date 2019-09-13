@@ -8,10 +8,10 @@ If you're not a customer, contact us at <info@gruntwork.io> or <http://www.grunt
 This is an example of how to use the [cross-account-iam-roles module](/modules/cross-account-iam-roles) to create IAM
 roles that users in other AWS accounts can assume to get access to this AWS account.
 
-Note that while these templates allow other accounts to access this account, you will also need to add IAM policies in 
-those other accounts for users to actually be able to switch between accounts. See the 
+Note that while these templates allow other accounts to access this account, you will also need to add IAM policies in
+those other accounts for users to actually be able to switch between accounts. See the
 [iam-groups module](/modules/iam-groups) for how to create those policies.
- 
+
 
 
 
@@ -19,9 +19,10 @@ those other accounts for users to actually be able to switch between accounts. S
 
 To try these templates out you must have Terraform installed:
 
-1. Open `vars.tf`, specify the environment variables mentioned at the top of the file, and fill in any variables that 
+1. Open `vars.tf`, specify the environment variables mentioned at the top of the file, and fill in any variables that
    don't have a default.
-1. Run `terraform apply` to create the IAM Roles. 
+1. Run `terraform init` to instruct Terraform to perform initialization steps.
+1. Run `terraform apply` to create the IAM Roles.
 1. This module will output the ARNs of these IAM roles as well as convenient sign-in URLs to assume those roles.
 1. In a separate AWS account, use the [iam-groups module](/modules/iam-groups) to give users permissions to assume the
    IAM Role ARNs from the previous step.

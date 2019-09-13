@@ -25,5 +25,6 @@ To try these templates out you must have Terraform installed (minimum version: `
 1. Open `vars.tf`, set the environment variables specified at the top of the file, and fill in any other variables that
    don't have a default.
 1. Run `terraform get`.
+1. Run `terraform init` to instruct Terraform to perform initialization steps.
 1. Run `terraform plan`.
 1. If the plan looks good, run `terraform apply`.

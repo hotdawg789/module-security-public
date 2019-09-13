@@ -8,7 +8,7 @@ If you're not a customer, contact us at <info@gruntwork.io> or <http://www.grunt
 This is an example of how to use the [iam-user-password-policy module](/modules/iam-user-password-policy) to setup a
 policy that governs requirements for all IAM User passwords.
 
-This example will apply the policy in the AWS account and overwrite any other existing policy. 
+This example will apply the policy in the AWS account and overwrite any other existing policy.
 
 See the [iam-user-password-policy module](/modules/iam-user-password-policy) for additional details.
 
@@ -18,4 +18,5 @@ To try these templates out you must have Terraform installed:
 
 1. Open `vars.tf` and fill in any variables that don't have a default.
 1. Review the hardcoded values in `main.tf`.
+1. Run `terraform init` to instruct Terraform to perform initialization steps.
 1. Run `terraform apply` to apply the password policy.

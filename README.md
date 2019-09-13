@@ -14,7 +14,8 @@ This repo contains modules for setting up best practices for managing secrets, c
 * [aws-auth](/modules/aws-auth): This script module makes it easy to use the CLI to authenticate to AWS when you have an
   MFA code, or want to assume an IAM Role in another AWS account.
 * [cloudtrail](/modules/cloudtrail): This Terraform Module configures AWS CloudTrail in an AWS account, along with reasonable
-  defaults around the S3 Bucket in which CloudTrail logs are stored.
+* [custom-iam-group](/modules/custom-iam-group): This Terraform Module creates an IAM group and attaches policies to the new
+  group. If requested, will require MFA for the new group.
 * [kms-master-key](/modules/kms-master-key): This Terraform Module creates a new [Customer Master Key
   (CMK)](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) in [Amazon's Key Management
   Service (KMS)](https://aws.amazon.com/kms/) as well as a [Key
@@ -26,8 +27,9 @@ This repo contains modules for setting up best practices for managing secrets, c
   to your EC2 Instances using either AWS IAM or Gruntwork Houston. Developers can upload public SSH Keys to an Identity
   Provider (e.g., AWS IAM or Google) user accounts and `ssh-grunt` will allow them to SSH to EC2 Instances using their
   Identity Provider user name and SSH key for authentication.
-* [iam-groups](/modules/iam-groups): This Terraform Module creates a best-practices set of IAM Groups that can be used to 
+* [iam-groups](/modules/iam-groups): This Terraform Module creates a best-practices set of IAM Groups that can be used to
   secure human and machine IAM Users.
+* [iam-users](/modules/iam-users): This Terraform Module can be used to create and manage IAM users as code.
 
 Click on each module above to see its documentation. Head over to the [examples](/examples) folder for examples.
 
