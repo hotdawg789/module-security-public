@@ -11,6 +11,7 @@ Roles that users authenticated by a SAML Identity Provider (IdP) can assume to g
 The saml-iam-roles module creates multiple IAM Roles as described in the [Resources Created section](
 /modules/saml-iam-roles#resources-created) of the module README. For example, a SAML-authenticated user might assume the
 `allow-full-access-from-saml` IAM Role, which grants full access to a given AWS account, or the
+`allow-iam-admin-access-from-saml` IAM Role, which grants `iam:*` access (the ability to manage IAM), or the
 `allow-read-only-access-from-saml` IAM Role, which grants read-only access to an AWS account. Ultimately, it will be up
 to the SAML IdP to assert which users can assume which IAM Roles in which AWS accounts.
 

@@ -6,12 +6,12 @@ If you're not a customer, contact us at <info@gruntwork.io> or <http://www.grunt
 # A best-practices set of IAM roles for cross-account access
 
 This module can be used to allow IAM users from other AWS accounts to access your AWS accounts (i.e. [cross-account
-access](https://aws.amazon.com/blogs/security/enable-a-new-feature-in-the-aws-management-console-cross-account-access/)). 
-This allows you to define each environment (mgmt, stage, prod, etc) in a separate AWS account, your IAM users in a 
+access](https://aws.amazon.com/blogs/security/enable-a-new-feature-in-the-aws-management-console-cross-account-access/)).
+This allows you to define each environment (mgmt, stage, prod, etc) in a separate AWS account, your IAM users in a
 single account, and to allow those users to easily switch between accounts with a single set of credentials.
 
 
-If you're not familiar with IAM concepts, start with the [Background Information](#background-information) section as a 
+If you're not familiar with IAM concepts, start with the [Background Information](#background-information) section as a
 way to familiarize yourself with the terminology.
 
 
@@ -27,41 +27,41 @@ To set up cross-account access, you need to:
 
 ### Create IAM roles in one account
 
-If you want to allow users in AWS account A to access AWS account B, use this module in AWS account B to create IAM 
-roles that specify which services those users may access. Check out the [cross-account-iam-roles 
+If you want to allow users in AWS account A to access AWS account B, use this module in AWS account B to create IAM
+roles that specify which services those users may access. Check out the [cross-account-iam-roles
 example](/examples/cross-account-iam-roles) for a working sample code of how to use this module.
 
 
 ### Create permissions to assume the IAM roles in other accounts
 
 Now that you have created IAM roles in account B, you need to give users in account A permission to use that role. The
-[iam-groups module](/modules/iam-groups) can automatically create IAM groups that grant these permissions. 
+[iam-groups module](/modules/iam-groups) can automatically create IAM groups that grant these permissions.
 
 In account A, do the following:
 
-1. Take the ARNs of the IAM roles you created in account B and plug them into the 
+1. Take the ARNs of the IAM roles you created in account B and plug them into the
    `var.iam_groups_for_cross_account_access` input variable of the `iam-groups` module in account A:
-   
+
     ```hcl
     module "iam_groups" {
       source = "git::git@github.com:gruntwork-io/module-security.git//modules/iam-groups?ref=v1.0.8"
-   
+
       iam_groups_for_cross_account_access = [
         {
           group_name = "account-b-read-only-access"
           iam_role_arn = "arn:aws:iam::1234567901234:role/allow-read-only-access-from-other-accounts"
         }
       ]   
-   
+
       # ... (other params omitted) ...
     }
     ```
-      
+
 1. Run `terraform apply` on the `iam-groups` module.
 
 1. Add users from account A to the corresponding groups that get created (e.g. `account-b-read-only-access`).
 
-1. Users in account A can now "switch" to the roles in account B as described in [How to switch between 
+1. Users in account A can now "switch" to the roles in account B as described in [How to switch between
    accounts](#how-to-switch-between-accounts).
 
 
@@ -79,18 +79,21 @@ maximum session expiration for these roles is 12 hours (configurable via the `va
 Note that these are the *maximum* session expirations; the actual value for session expiration is specified when
 making API calls to assume the IAM role (see [aws-auth](/modules/aws-auth)).
 
-* **allow-read-only-access-from-other-accounts**: Users from the accounts in 
+* **allow-read-only-access-from-other-accounts**: Users from the accounts in
   `var.allow_read_only_access_from_other_account_arns` will get read-only access to all services in this account.
 
-* **allow-billing-access-from-other-accounts**: Users from the accounts in 
-  `var.allow_billing_access_from_other_account_arns` will get full (read and write) access to the billing details for 
+* **allow-billing-access-from-other-accounts**: Users from the accounts in
+  `var.allow_billing_access_from_other_account_arns` will get full (read and write) access to the billing details for
   this account.
 
 * **allow-dev-access-from-other-accounts**: Users from the accounts in `var.allow_dev_access_from_other_account_arns`
   will get full (read and write) access to the services in this account specified in `var.dev_permitted_services`.
 
-* **allow-full-access-from-other-accounts**: Users from the accounts in `var.allow_full_access_from_other_account_arns` 
+* **allow-full-access-from-other-accounts**: Users from the accounts in `var.allow_full_access_from_other_account_arns`
   will get full (read and write) access to all services in this account.
+
+* **allow-iam-admin-access-from-other-accounts**: Users from the accounts in `var.allow_iam_admin_access_from_other_account_arns`
+  will get IAM admin access.
 
 
 ### IAM Roles intended for machine users
@@ -111,8 +114,8 @@ making API calls to assume the IAM role (see [aws-auth](/modules/aws-auth)).
   connections against Gruntwork Houston running in this AWS account.
 
 * **allow-auto-deploy-access-from-other-accounts**: Users from the accounts in `var.allow_auto_deploy_from_other_account_arns`
-  will get automated deployment access to all services in this account with the permissions specified in 
-  `var.auto_deploy_permissions`. The main use case is to allow a CI server (e.g. Jenkins) in another AWS account to do 
+  will get automated deployment access to all services in this account with the permissions specified in
+  `var.auto_deploy_permissions`. The main use case is to allow a CI server (e.g. Jenkins) in another AWS account to do
   automated deployments in this AWS account.
 
 
@@ -132,7 +135,7 @@ are named `allow_XXX_access_sign_in_url`, where `XXX` is one of `read-only`, `bi
 ### Switching with CLI tools (including Terraform)
 
 Check out the [AWS Switching to a Role (AWS Command Line Interface)
-documentation](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-cli.html). Note that assuming 
+documentation](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-cli.html). Note that assuming
 roles with the AWS CLI takes quite a few steps, so use the [aws-auth script](
 https://github.com/gruntwork-io/module-security/tree/master/modules/aws-auth) to reduce it to a one-liner.
 
