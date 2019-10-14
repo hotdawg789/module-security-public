@@ -14,8 +14,7 @@ This repo contains modules for setting up best practices for managing secrets, c
 * [aws-auth](/modules/aws-auth): This script module makes it easy to use the CLI to authenticate to AWS when you have an
   MFA code, or want to assume an IAM Role in another AWS account.
 * [cloudtrail](/modules/cloudtrail): This Terraform Module configures AWS CloudTrail in an AWS account, along with reasonable
-* [custom-iam-group](/modules/custom-iam-group): This Terraform Module creates an IAM group and attaches policies to the new
-  group. If requested, will require MFA for the new group.
+* [custom-iam-entity](/modules/custom-iam-entity): This Terraform Module creates an IAM group and/or role and attaches IAM policies by name and/or ARN.
 * [kms-master-key](/modules/kms-master-key): This Terraform Module creates a new [Customer Master Key
   (CMK)](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) in [Amazon's Key Management
   Service (KMS)](https://aws.amazon.com/kms/) as well as a [Key

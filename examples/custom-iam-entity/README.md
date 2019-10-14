@@ -1,14 +1,15 @@
 **Note**: This public repo contains the documentation for the private GitHub repo <https://github.com/gruntwork-io/module-security>.
 We publish the documentation publicly so it turns up in online searches, but to see the source code, you must be a Gruntwork customer.
-If you're already a Gruntwork customer, the original source for this file is at: <https://github.com/gruntwork-io/module-security/blob/master/examples/custom-iam-group/README.md>.
+If you're already a Gruntwork customer, the original source for this file is at: <https://github.com/gruntwork-io/module-security/blob/master/examples/custom-iam-entity/README.md>.
 If you're not a customer, contact us at <info@gruntwork.io> or <http://www.gruntwork.io> for info on how to get access!
 
-# Custom IAM Groups Example
+# Custom IAM Entity Example
 
-This is an example of how to use the [custom-iam-group module](/modules/custom-iam-group) to create an IAM group with attached IAM policies.
-See the custom-iam-group module documentation for additional detail.
+This is an example of how to use the [custom-iam-entity module](/modules/custom-iam-entity) to create an IAM group or role with attached IAM policies.
 
-This example will create an IAM group with several example IAM policies attached. You can attach policies in any combination of the following variables:
+Use the boolean variables `should_create_iam_group` and `should_create_iam_role` variables to specify whether to create a group and/or a role, respectively. Name the group and/or role  with the `iam_group_name` and `iam_role_name` variables. If creating an IAM role, you must also specify a list of ARNs that are allowed to assume the role in `assume_role_arns`.
+
+This example will create an IAM group and/or role with several example IAM policies attached. You can attach policies in any combination of the following variables:
 
 - `iam_policy_arns`: Attach policies by providing a list of policy ARNs
 - `iam_customer_managed_policy_names`: Attach policies by providing a list of customer-managed policy names
