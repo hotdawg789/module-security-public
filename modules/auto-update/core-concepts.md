@@ -1,24 +1,13 @@
 **Note**: This public repo contains the documentation for the private GitHub repo <https://github.com/gruntwork-io/module-security>.
 We publish the documentation publicly so it turns up in online searches, but to see the source code, you must be a Gruntwork customer.
-If you're already a Gruntwork customer, the original source for this file is at: <https://github.com/gruntwork-io/module-security/blob/master/modules/auto-update/README.md>.
+If you're already a Gruntwork customer, the original source for this file is at: <https://github.com/gruntwork-io/module-security/blob/master/modules/auto-update/core-concepts.md>.
 If you're not a customer, contact us at <info@gruntwork.io> or <http://www.gruntwork.io> for info on how to get access!
 
-# Auto Update Module
+# Auto Update Core Concepts
 
-This module can configure a Linux server to automatically install security updates. This module currently supports:
+## Installation
 
-* Ubuntu 14.04/16.04 (using [unattended-upgrades](https://help.ubuntu.com/lts/serverguide/automatic-updates.html))
-* Amazon Linux, Amazon Linux 2, and CentOS (using [yum-cron](http://man7.org/linux/man-pages/man8/yum-cron.8.html)).
-
-## How do you use this module?
-
-#### Example
-
-See the [auto-update example](/examples/auto-update) for an example of how to use this module.
-
-#### Installation
-
-To use this module, you just need to:
+To use this module, you need to:
 
 1. Install [bash-commons](https://github.com/gruntwork-io/bash-commons) on your servers.
 1. Install and run the `configure-auto-update` script on your servers.
@@ -34,7 +23,7 @@ gruntwork-install --module-name bash-commons --tag <BASH_COMMONS_VERSION> --repo
 gruntwork-install --module-name auto-update --tag <MODULE_SECURITY_VERSION> --repo https://github.com/gruntwork-io/module-security
 ```
 
-#### Ubuntu support
+## Ubuntu support
 
 On Ubuntu, we use [unattended-upgrades](https://help.ubuntu.com/lts/serverguide/automatic-updates.html) to
 automatically install updates. A cron job runs `unattended-upgrades` once per day. Our default configuration is as

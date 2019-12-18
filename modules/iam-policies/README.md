@@ -13,7 +13,7 @@ Note that these documents are Terraform [data sources](https://www.terraform.io/
 so they don't create anything themselves and are not intended to be used on their own. The way to use them is to take
 the outputs from this module (which are all JSON IAM documents) and plug them into other Terraform resources, such
 as `aws_iam_policy`, `aws_iam_user_policy`, `aws_iam_group_policy`, and `aws_iam_role_policy`. See the
-[iam-groups](../iam-groups) and [corss-account-iam-roles](../cross-account-iam-roles) modules for examples.
+[iam-groups](../iam-groups) and [cross-account-iam-roles](../cross-account-iam-roles) modules for examples.
 
 If you're not familiar with IAM concepts, start with the [Background Information](#background-information) section as a
 way to familiarize yourself with the terminology.

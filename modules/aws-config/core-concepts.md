@@ -1,27 +1,32 @@
 **Note**: This public repo contains the documentation for the private GitHub repo <https://github.com/gruntwork-io/module-security>.
 We publish the documentation publicly so it turns up in online searches, but to see the source code, you must be a Gruntwork customer.
-If you're already a Gruntwork customer, the original source for this file is at: <https://github.com/gruntwork-io/module-security/blob/master/modules/aws-config/README.md>.
+If you're already a Gruntwork customer, the original source for this file is at: <https://github.com/gruntwork-io/module-security/blob/master/modules/aws-config/core-concepts.md>.
 If you're not a customer, contact us at <info@gruntwork.io> or <http://www.gruntwork.io> for info on how to get access!
 
-# AWS Config Terraform Module
+# AWS Config Core Concepts
 
-This Terraform Module configures [AWS Config](https://aws.amazon.com/config/), a service that allows you to assess, audit, and evaluate the configurations of your AWS resources. You can use AWS Config to ensure that AWS resources are configured in a manner that is in compliance with your company policies or regulatory requirements.
+## Background
+
+### What is AWS Config?
+Config monitors your AWS resources (such as EC2 instances, security groups, EBS volumes, CloudFront Distributions, and [a whole lot more](https://docs.aws.amazon.com/config/latest/developerguide/resource-config-reference.html)) for configuration changes. It tracks these changes over time, and can track whether configurations are in compliance with a standard configuration. If the configuration drifts out of compliance, Config can send a notification. You can view and query Config items in the AWS Config console.
+
+### What are Config Rules?
+Config rules are expressions of a desired configuration state, written in code and executed as Lambda functions. When a resource configuration changes, AWS Config fires the relevant Lambda functions to evaluate whether the configuration changes the state of compliance with the desired configuration. AWS has developed a set of pre-written rules called [AWS Config Managed Rules](https://docs.aws.amazon.com/config/latest/developerguide/managed-rules-by-aws-config.html), but you can also author your own [custom rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_develop-rules_nodejs.html).
+
+This module enables AWS Config but does not manage or enable any Config Rules.
+
+## What resources does this module create?
 
 This module creates the requisite elements to enable AWS Config in a given region. The steps include:
-1. Create a [Configuration Recorder](https://docs.aws.amazon.com/config/latest/developerguide/config-concepts.html#config-recorder)
-2. Create an S3 Bucket and an SNS Topic to be used by AWS Config to deliver configuration [snapshots](https://docs.aws.amazon.com/config/latest/developerguide/config-concepts.html#config-snapshot) and [streams](https://docs.aws.amazon.com/config/latest/developerguide/config-concepts.html#config-stream).
-3. Enable the configuration recorder
 
-The module does not create and manage [Config Rules](https://docs.aws.amazon.com/config/latest/developerguide/config-concepts.html#aws-config-rules) or [Aggregators](https://docs.aws.amazon.com/config/latest/developerguide/config-concepts.html#multi-account-multi-region-data-aggregation).
+1. Create a [Configuration 
+   Recorder](https://docs.aws.amazon.com/config/latest/developerguide/config-concepts.html#config-recorder).
+1. Create an S3 Bucket and an SNS Topic to be used by AWS Config to deliver configuration 
+   [snapshots](https://docs.aws.amazon.com/config/latest/developerguide/config-concepts.html#config-snapshot) and 
+   [streams](https://docs.aws.amazon.com/config/latest/developerguide/config-concepts.html#config-stream).
+1. Enable the configuration recorder.
 
-AWS Config must be enabled on a per-region basis. For a complete view of your AWS resources, use this module within each region that is enabled in your account.
-
-## Quick Start
-
-See the [config example](/examples/aws-config) in this repo for an example of how to use the module.
-
-## Resources
-This module creates the following resources:
+To implement these steps, this module creates the following resources:
 
 - **aws_s3_bucket**: An S3 bucket used by AWS Config to store configuration items.
 - **aws_sns_topic**: An SNS topic for notifications from AWS Config.
@@ -30,15 +35,14 @@ This module creates the following resources:
 - **aws_config_delivery_channel**: A delivery channel with the previously noted S3 bucket and SNS destinations.
 - **aws_config_configuration_recorder_status**: A resource to enable the configuration recorder.
 
-## Background
+The module does not create and manage [Config 
+Rules](https://docs.aws.amazon.com/config/latest/developerguide/config-concepts.html#aws-config-rules) or 
+[Aggregators](https://docs.aws.amazon.com/config/latest/developerguide/config-concepts.html#multi-account-multi-region-data-aggregation).
 
-### What is Config?
-Config monitors your AWS resources (such as EC2 instances, security groups, EBS volumes, CloudFront Distributions, and [a whole lot more](https://docs.aws.amazon.com/config/latest/developerguide/resource-config-reference.html)) for configuration changes. It tracks these changes over time, and can track whether configurations are in compliance with a standard configuration. If the configuration drifts out of compliance, Config can send a notification. You can view and query Config items in the AWS Config console.
+**Note**: AWS Config must be enabled on a per-region basis. For a complete view of your AWS resources, use this module 
+within each region that is enabled in your account.
 
-### What are Config Rules?
-Config rules are expressions of a desired configuration state, written in code and executed as Lambda functions. When a resource configuration changes, AWS Config fires the relevant Lambda functions to evaluate whether the configuration changes the state of compliance with the desired configuration. AWS has developed a set of pre-written rules called [AWS Config Managed Rules](https://docs.aws.amazon.com/config/latest/developerguide/managed-rules-by-aws-config.html), but you can also author your own [custom rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_develop-rules_nodejs.html).
-
-This module enables AWS Config but does not manage or enable any Config Rules.
+## Day-to-day operations
 
 ### What does a configuration item look like, and how do I view it?
 A [configuration item](https://docs.aws.amazon.com/config/latest/developerguide/config-item-table.html) is a JSON-encoded description of configuration change to a resource. Configuration items are delivered by AWS Config each time a resource is created, modified, or deleted. The following snippet is an example of a configuration item (edited for brevity):

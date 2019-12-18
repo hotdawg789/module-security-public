@@ -1,18 +1,20 @@
 **Note**: This public repo contains the documentation for the private GitHub repo <https://github.com/gruntwork-io/module-security>.
 We publish the documentation publicly so it turns up in online searches, but to see the source code, you must be a Gruntwork customer.
-If you're already a Gruntwork customer, the original source for this file is at: <https://github.com/gruntwork-io/module-security/blob/master/modules/cloudtrail/README.md>.
+If you're already a Gruntwork customer, the original source for this file is at: <https://github.com/gruntwork-io/module-security/blob/master/modules/cloudtrail/core-concepts.md>.
 If you're not a customer, contact us at <info@gruntwork.io> or <http://www.gruntwork.io> for info on how to get access!
 
-# AWS CloudTrail Terraform Module
+# AWS CloudTrail Core Concepts
 
-This Terraform Module configures [AWS CloudTrail](https://aws.amazon.com/cloudtrail/), a service for logging every API
- call made against your AWS account.
+## Background
 
-In addition to enabling CloudTrail, this module creates an S3 Bucket where CloudTrail events are stored and a KMS Key
-used to encrypt all CloudTrail events. It also offers options for how long to retain CloudTrail log data and how to
-guarantee CloudTrail log integrity.
+### What is CloudTrail?
 
-## Motivation
+From the [AWS documentation](http://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html):
+
+> You can use AWS CloudTrail to get a history of AWS API calls and related events for your account. This includes calls
+made by using the AWS Management Console, AWS SDKs, command line tools, and higher-level AWS services.
+
+### Why use CloudTrail?
 
 An important element of cloud security is auditing all AWS API calls. This can give you key insight into when a new port
 was opened, when a new IAM User account was created, and other security-significant events. While it's trivially easy to
@@ -22,9 +24,48 @@ with, and getting alerts when certain API events occur is non-trivial.
 Note that *any* interaction with AWS ultimately results in an API call. This includes using the AWS Web Console, awscli,
 and any of the various AWS SDKs.
 
-## Quick Start
+### What is a CloudTrail Trail?
 
-See the [cloudtrail example](/examples/cloudtrail) in this repo for an example of how to use the module.
+To setup CloudTrail, you enable an individual "Trail" which has certain configuration options. For example, a Trail could
+be configured to collect logs from just a single AWS Region or all AWS Regions, it could optionally log to CloudWatch Logs,
+optionally use a KMS Key, etc.
+
+In practice, most teams will use a single CloudTrail Trail.
+
+### What's the difference between CloudTrail and AWS Config?
+
+CloudTrail records every API call event in log files and provides convenient ways of viewing those logs. It treats the
+*API Call* as a first-class entity.
+
+AWS Config tracks changes to individual AWS resources and can alert you when a change is made that violates a defined
+policy. It treats the *AWS Resource* as a first-class entity.
+
+Naturally, an API Call typically operates on a particular AWS Resource, so the AWS Web Console includes links to the
+corresponding AWS Resource in AWS Config (and vice versa).  
+
+### CloudTrail Threat Model
+
+The following are the various parts of the cloudtrail module threat model:
+
+- **Deleting the S3 Bucket that stores CloudTrail events.** An IAM User who has permissions to delete the S3 Bucket that
+  contains all CloudTrail events can delete all historical log data by deleting the S3 Bucket. Interestingly, CloudTrail
+  will still show the last 7 days of create, modify, and delete API calls in the AWS Web Console, even after the S3
+  Bucket is deleted.
+
+  One way to protect against this is to set an alert if the S3 Bucket is deleted. In addition, an attacker could
+  delete the alert (!) so we also need an alert if any alerts are themselves deleted.
+
+  To assist with access auditing, you can also enable S3 Access Logs so that any access or modification of the CloudTrail S3
+  bucket will be logged to the separate S3 bucket. Of course, you'll need to ensure that the same user does not have access
+  to the access logs bucket.
+
+  Another option is to enable [S3 Cross-Region Replication](http://docs.aws.amazon.com/AmazonS3/latest/dev/crr.html) in
+  a cross-account scenario. That is, all S3 data is asynchronously replicated to another S3 Bucket in another AWS Account
+  which you limit access to a very small number of trusted parties.
+
+  Yet another option is to enable CloudWatch Logs integration so that CloudTrail events are published to a CloudWatch Logs
+  group. The same deletion risk exists for an IAM user who has access to CloudWatch Logs. This is one reason among many
+  why it is recommended to limit IAM access and prevent full administrator rights to any IAM user.
 
 ## Resources Created
 
@@ -39,23 +80,10 @@ This module creates the following AWS resources:
 - **aws_cloudwatch_log_group:** (optional) A CloudWatch Logs group where CloudTrail can publish events.
 - **aws_iam_role:** (optional) An IAM role for CloudTrail to use for publishing events to CloudWatch Logs.
 
-## Background
-
-### What is CloudTrail?
-
-From the [AWS documentation](http://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html):
-
-> You can use AWS CloudTrail to get a history of AWS API calls and related events for your account. This includes calls
-made by using the AWS Management Console, AWS SDKs, command line tools, and higher-level AWS services.
 
 
-### What is a CloudTrail Trail?
 
-To setup CloudTrail, you enable an individual "Trail" which has certain configuration options. For example, a Trail could
-be configured to collect logs from just a single AWS Region or all AWS Regions, it could optionally log to CloudWatch Logs,
-optionally use a KMS Key, etc.
-
-In practice, most teams will use a single CloudTrail Trail.
+## Operations
 
 ### Where are CloudTrail logs stored?
 
@@ -125,16 +153,8 @@ alarm that notifies an SNS Topic when those events occur.
 
 This module does not currently support those features, but if you'd like us to add them please email info@gruntwork.io.
 
-### What's the difference between CloudTrail and AWS Config?
 
-CloudTrail records every API call event in log files and provides convenient ways of viewing those logs. It treats the
-*API Call* as a first-class entity.
 
-AWS Config tracks changes to individual AWS resources and can alert you when a change is made that violates a defined
-policy. It treats the *AWS Resource* as a first-class entity.
-
-Naturally, an API Call typically operates on a particular AWS Resource, so the AWS Web Console includes links to the
-corresponding AWS Resource in AWS Config (and vice versa).  
 
 ## Gotchas
 
@@ -160,29 +180,7 @@ Furthermore, if you provide an existing S3 bucket, the module will not enable ac
 `enable_s3_server_access_logging=true`. The access logging bucket will be created, but you'll need to manually enable logging
 in the bucket properties of the existing bucket.
 
-## Threat Model
 
-The following are the various parts of the cloudtrail module threat model:
-
-- **Deleting the S3 Bucket that stores CloudTrail events.** An IAM User who has permissions to delete the S3 Bucket that
-  contains all CloudTrail events can delete all historical log data by deleting the S3 Bucket. Interestingly, CloudTrail
-  will still show the last 7 days of create, modify, and delete API calls in the AWS Web Console, even after the S3
-  Bucket is deleted.
-
-  One way to protect against this is to set an alert if the S3 Bucket is deleted. In addition, an attacker could
-  delete the alert (!) so we also need an alert if any alerts are themselves deleted.
-
-  To assist with access auditing, you can also enable S3 Access Logs so that any access or modification of the CloudTrail S3
-  bucket will be logged to the separate S3 bucket. Of course, you'll need to ensure that the same user does not have access
-  to the access logs bucket.
-
-  Another option is to enable [S3 Cross-Region Replication](http://docs.aws.amazon.com/AmazonS3/latest/dev/crr.html) in
-  a cross-account scenario. That is, all S3 data is asynchronously replicated to another S3 Bucket in another AWS Account
-  which you limit access to a very small number of trusted parties.
-
-  Yet another option is to enable CloudWatch Logs integration so that CloudTrail events are published to a CloudWatch Logs
-  group. The same deletion risk exists for an IAM user who has access to CloudWatch Logs. This is one reason among many
-  why it is recommended to limit IAM access and prevent full administrator rights to any IAM user.
 
 
 ## Known Issues
@@ -214,6 +212,9 @@ The following are the various parts of the cloudtrail module threat model:
 
   These commands tell Terraform to update the state file, and treat the bucket that Terraform wanted to create as already
   existing. Now you'll get a yellow "modify" output when running `terraform plan` and no destroy/re-create will be needed.
+
+
+
 
 ## TODO
 

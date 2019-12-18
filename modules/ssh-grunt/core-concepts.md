@@ -1,34 +1,7 @@
 **Note**: This public repo contains the documentation for the private GitHub repo <https://github.com/gruntwork-io/module-security>.
 We publish the documentation publicly so it turns up in online searches, but to see the source code, you must be a Gruntwork customer.
-If you're already a Gruntwork customer, the original source for this file is at: <https://github.com/gruntwork-io/module-security/blob/master/modules/ssh-grunt/README.md>.
+If you're already a Gruntwork customer, the original source for this file is at: <https://github.com/gruntwork-io/module-security/blob/master/modules/ssh-grunt/core-concepts.md>.
 If you're not a customer, contact us at <info@gruntwork.io> or <http://www.gruntwork.io> for info on how to get access!
-
-# SSH Grunt
-
-This module contains an app called `ssh-grunt` (formerly known as `ssh-iam`) that allows you to manage SSH access to
-your EC2 Instances via an Identity Provider (IdP). Two types of IdP integrations are supported:
-
-1. AWS [Identity and Access Management (IAM)](https://aws.amazon.com/iam/): Developers in certain IAM Groups will be
-   able to SSH to your servers using their IAM user name and the SSH key they uploaded to their IAM user account.
-
-1. [Gruntwork Houston](https://gruntwork.io/houston): Developers with certain roles in your supported IdP (e.g.,
-   ADFS, AWS SSO, or Google) will be able to SSH to your servers using their IdP username and an SSH key
-   they uploaded to Houston.
-
-
-Features:
-
-* `ssh-grunt` can automatically sync user accounts from your IdP to your servers, so each developer can have their own
-  user name (e.g. "susan", "jim") rather than everyone using a shared user (e.g. "ubuntu", "ec2-user").
-* With `ssh-grunt`, each developer uses their own SSH keys to connect to servers (instead of a single, shared Key Pair).
-* If a developer's SSH key gets compromised, they can quickly use IAM or Houston to revoke the old key and upload a
-  new one, and `ssh-grunt` will detect this change on the very next login.
-* If a developer leaves your company, as soon as you remove their user from your IdP, they will no longer be able to
-  SSH to your servers.
-* `ssh-grunt` supports all major Linux distros.
-
-
-
 
 ## Setup instructions
 
@@ -168,7 +141,7 @@ single AWS account or multiple AWS accounts:
    Role](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) to the EC2 Instance.
 1. IAM permissions: `ssh-grunt` needs an [IAM
    Policy](http://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html) that allows the `iam:GetGroup`,
-   `iam:ListSSHPublicKeys`, and `iam:GetSSHPublicKey` actions. The [iam-policies module](/modules/iam-policies) can 
+   `iam:ListSSHPublicKeys`, and `iam:GetSSHPublicKey` actions. The [iam-policies module](/modules/iam-policies) can
    provide the IAM policy with these permissions for you in the output variable `ssh_grunt_permissions`.
 
 Check out the [ssh-grunt example](/examples/ssh-grunt) for sample code.
@@ -451,7 +424,7 @@ Arguments:
 
 Options:
 
-* `--role-arn` (optional): Assume this IAM role for all API calls to AWS. This is used primarily when the IAM users and 
+* `--role-arn` (optional): Assume this IAM role for all API calls to AWS. This is used primarily when the IAM users and
   groups are defined in another AWS account.
 
 Examples:
@@ -473,7 +446,7 @@ Options:
   one of `--iam-group` or `--iam-group-sudo` is required.
 * `--iam-group-sudo` (optional): Sync the user accounts on this system with the user accounts in this IAM group and
   give these user accounts sudo privileges. At least one of `--iam-group` or `--iam-group-sudo` is required.
-* `--role-arn` (optional): Assume this IAM role for all API calls to AWS. This is used primarily when the IAM users and 
+* `--role-arn` (optional): Assume this IAM role for all API calls to AWS. This is used primarily when the IAM users and
   groups are defined in another AWS account.
 * `--force-user-deletion` (optional): If this flag is set, delete not only the OS user, but also their home directory
   when that user is removed from an ssh-grunt managed group.
@@ -505,7 +478,7 @@ Options:
   Default: `*/30 * * * *` (every 30 minutes).
 * `--authorized-keys-command-user` (optional): The user that should execute the SSH AuthorizedKeysCommand. Default:
   current user.
-* `--role-arn` (optional): Assume this IAM role for all API calls to AWS. This is used primarily when the IAM users and 
+* `--role-arn` (optional): Assume this IAM role for all API calls to AWS. This is used primarily when the IAM users and
   groups are defined in another AWS account.
 * `--force-user-deletion` (optional): If this flag is set, delete not only the OS user, but also their home directory
   when that user is removed from an ssh-grunt managed group.
@@ -800,5 +773,3 @@ Some items we are considering for the future:
 1. Send notifications for all server access: https://www.inversoft.com/guides/2016-guide-to-user-data-security#intrusion-detection
 
 If you're interested in these features, [let us know](support@gruntwork.io)!
-
-
