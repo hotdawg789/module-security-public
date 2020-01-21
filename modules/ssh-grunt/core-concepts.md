@@ -772,4 +772,4 @@ Some items we are considering for the future:
 1. Lock down SSH even more: https://stribika.github.io/2015/01/04/secure-secure-shell.html
 1. Send notifications for all server access: https://www.inversoft.com/guides/2016-guide-to-user-data-security#intrusion-detection
 
-If you're interested in these features, [let us know](support@gruntwork.io)!
+If you're interested in these features, [let us know](mailto:support@gruntwork.io)!
