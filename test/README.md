@@ -23,35 +23,32 @@ cleanup.
 #### Prerequisites
 
 - Install the latest version of [Go](https://golang.org/).
-- Install [dep](https://github.com/golang/dep) for Go dependency management. On OSX, the simplest way to install is
-  `brew update; brew install dep`.
 - Install [Terraform](https://www.terraform.io/downloads.html).
 - Add your AWS credentials as environment variables: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
 - For some of the tests, you also need to set the `GITHUB_OAUTH_TOKEN` environment variable to a valid GitHub
   auth token with "repo" access. You can generate one here: https://github.com/settings/tokens
 
-#### Setup
-
-Download Go dependencies using dep:
-
-```
-cd test
-dep ensure
-```
-
 #### Run all the tests
 
+The tests in this repo are split into two types:
+
+- Tests related to account setup (`landingzone` folder)
+- Everything else (`security` folder)
+
+You can run the tests for each package by going into the folder and calling `go test`. For example, to run the
+`landingzone` tests:
+
 ```bash
-cd test
+cd test/landingzone
 go test -v -timeout 45m -parallel 128
 ```
 
-**Note**: The automated tests for the `kms-master-key` and `cloudtrail` packages are disabled by default. That's because 
-generating a KMS Master Key costs $1/month, even if we delete it right after, which can add up quickly if we run this test 
+**Note**: The automated tests for the `kms-master-key` and `cloudtrail` packages are disabled by default. That's because
+generating a KMS Master Key costs $1/month, even if we delete it right after, which can add up quickly if we run this test
 often. To enable the test, you need to set the `RUN_KMS_TEST` or `RUN_CLOUDTRAIL_TEST` environment variables:
 
 ```bash
-cd test
+cd test/security
 RUN_KMS_TEST=true go test -v -timeout 45m -parallel 128
 ```
 
@@ -60,6 +57,6 @@ RUN_KMS_TEST=true go test -v -timeout 45m -parallel 128
 To run a specific test called `TestFoo`:
 
 ```bash
-cd test
+cd test/landingzone
 go test -v -timeout 45m -parallel 128 -run TestFoo
 ```
