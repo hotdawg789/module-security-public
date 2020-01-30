@@ -49,3 +49,9 @@ See [variables.tf](variables.tf) for the input format.
 Removing entries from `child_accounts` will only remove an AWS account from an organization. Terraform will not close the account. 
 The member account must be prepared to be a standalone account beforehand. 
 See the [AWS Organizations documentation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html) for more information.
+
+### Importing existing account / applying changes to child accounts
+The [AWS Organizations read API for accounts](https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html) does not expose 
+certain properties you can set while creating a new account: `role_name` and `iam_user_access_to_billing`. When importing an existing 
+account, `terraform` will not be able to populate those fields, and will instead leave them empty. To prevent perpetual diff across applies, 
+changes to those properties have been excluded with a `lifecycle` hook in the module.  
