@@ -60,7 +60,7 @@ resource "aws_iam_group_policy" "full_access" {
 
 You can find the full list of outputs in [outputs.tf](outputs.tf).
 
-Check out the [iam-groups](../iam-groups) and [corss-account-iam-roles](../cross-account-iam-roles) modules for example code.
+Check out the [iam-groups](../iam-groups) and [cross-account-iam-roles](../cross-account-iam-roles) modules for example code.
 
 
 
