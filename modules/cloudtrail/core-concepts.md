@@ -160,7 +160,7 @@ This module does not currently support those features, but if you'd like us to a
 
 1. Even if an IAM User doesn't have access to the KMS Key used to encrypt all CloudTrail log data, if they have the
    appropriate IAM Policy, they can still view a subset of CloudTrail events in the AWS Web Console! Specifically, the
-   AWS Web Console shows all API activity for create, modify, and delete API calls for the last 7 days only. Viewing
+   AWS Web Console shows most API activity for create, modify, and delete API calls for the last 7 days only. Note that some activity is not visible, such as SSM calls. Viewing
    any other CloudTrail data does require access to the KMS Key.
 
 1. CloudTrail logs are not delivered instantly to the S3 Bucket. There's typically a delay of a few minutes. While AWS
