@@ -49,7 +49,7 @@ In account A, do the following:
       iam_groups_for_cross_account_access = [
         {
           group_name = "account-b-read-only-access"
-          iam_role_arn = "arn:aws:iam::1234567901234:role/allow-read-only-access-from-other-accounts"
+          iam_role_arns = ["arn:aws:iam::1234567901234:role/allow-read-only-access-from-other-accounts"]
         }
       ]   
 
