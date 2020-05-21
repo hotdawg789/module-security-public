@@ -12,7 +12,7 @@ If you're not a customer, contact us at <info@gruntwork.io> or <http://www.grunt
 From the [AWS documentation](http://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html):
 
 > You can use AWS CloudTrail to get a history of AWS API calls and related events for your account. This includes calls
-made by using the AWS Management Console, AWS SDKs, command line tools, and higher-level AWS services.
+> made by using the AWS Management Console, AWS SDKs, command line tools, and higher-level AWS services.
 
 ### Why use CloudTrail?
 
@@ -21,7 +21,7 @@ was opened, when a new IAM User account was created, and other security-signific
 turn on CloudTrail, thinking through where to store CloudTrail logs, how to guarantee CloudTrails logs aren't tampered
 with, and getting alerts when certain API events occur is non-trivial.
 
-Note that *any* interaction with AWS ultimately results in an API call. This includes using the AWS Web Console, awscli,
+Note that _any_ interaction with AWS ultimately results in an API call. This includes using the AWS Web Console, awscli,
 and any of the various AWS SDKs.
 
 ### What is a CloudTrail Trail?
@@ -35,13 +35,13 @@ In practice, most teams will use a single CloudTrail Trail.
 ### What's the difference between CloudTrail and AWS Config?
 
 CloudTrail records every API call event in log files and provides convenient ways of viewing those logs. It treats the
-*API Call* as a first-class entity.
+_API Call_ as a first-class entity.
 
 AWS Config tracks changes to individual AWS resources and can alert you when a change is made that violates a defined
-policy. It treats the *AWS Resource* as a first-class entity.
+policy. It treats the _AWS Resource_ as a first-class entity.
 
 Naturally, an API Call typically operates on a particular AWS Resource, so the AWS Web Console includes links to the
-corresponding AWS Resource in AWS Config (and vice versa).  
+corresponding AWS Resource in AWS Config (and vice versa).
 
 ### CloudTrail Threat Model
 
@@ -75,13 +75,10 @@ This module creates the following AWS resources:
   is stored.
 - **aws_kms_key:** A KMS Customer Master Key (CMK) that encrypts all CloudTrail data. In order to view any read API log
   entries, or any API log entries older than 7 days, a user must have "decrypt" rights on this Key.
-- **aws_cloudtrail:** We create a CloudTrail "Trail" that records log data from all AWS Regions and also writes a hash
+- **aws_cloudtrail:** We create a CloudTrail "trail" that records log data from all AWS Regions and also writes a hash
   of all log entries to S3 to allow for log file validation.
 - **aws_cloudwatch_log_group:** (optional) A CloudWatch Logs group where CloudTrail can publish events.
 - **aws_iam_role:** (optional) An IAM role for CloudTrail to use for publishing events to CloudWatch Logs.
-
-
-
 
 ## Operations
 
@@ -143,7 +140,7 @@ To view read API calls, or any data older than 7 days, you must access it direct
 Another approach is to view the logs in CloudWatch Logs. If the trail is configured to publish to a CloudWatch Logs group, each
 event as described above is visible as a separate entry in the log group.
 
-*Tip: IAM Users with IAM-granted access to CloudTrail can still view some data. See the [Gotchas](#gotchas) for details.*
+_Tip: IAM Users with IAM-granted access to CloudTrail can still view some data. See the [Gotchas](#gotchas) for details._
 
 ### Can you get alerted when certain API events occur?
 
@@ -152,9 +149,6 @@ You can then configure CloudWatch Logs to emit a custom CloudWatch metric for ce
 alarm that notifies an SNS Topic when those events occur.
 
 This module does not currently support those features, but if you'd like us to add them please email info@gruntwork.io.
-
-
-
 
 ## Gotchas
 
@@ -175,13 +169,10 @@ This module does not currently support those features, but if you'd like us to a
    ```
 
 1. If you provide an existing S3 bucket rather than allow this module to create one, you'll need to apply the [recommended
-S3 Bucket Policy](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/create-s3-bucket-policy-for-cloudtrail.html).
-Furthermore, if you provide an existing S3 bucket, the module will not enable access logging even if you use
-`enable_s3_server_access_logging=true`. The access logging bucket will be created, but you'll need to manually enable logging
-in the bucket properties of the existing bucket.
-
-
-
+   S3 Bucket Policy](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/create-s3-bucket-policy-for-cloudtrail.html).
+   Furthermore, if you provide an existing S3 bucket, the module will not enable access logging even if you use
+   `enable_s3_server_access_logging=true`. The access logging bucket will be created, but you'll need to manually enable logging
+   in the bucket properties of the existing bucket.
 
 ## Known Issues
 
@@ -212,9 +203,6 @@ in the bucket properties of the existing bucket.
 
   These commands tell Terraform to update the state file, and treat the bucket that Terraform wanted to create as already
   existing. Now you'll get a yellow "modify" output when running `terraform plan` and no destroy/re-create will be needed.
-
-
-
 
 ## TODO
 
