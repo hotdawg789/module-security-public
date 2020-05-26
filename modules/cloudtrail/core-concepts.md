@@ -148,7 +148,41 @@ Yes. It's possible to configure CloudTrail to also log events in [CloudWatch Log
 You can then configure CloudWatch Logs to emit a custom CloudWatch metric for certain events, and then create a CloudWatch
 alarm that notifies an SNS Topic when those events occur.
 
-This module does not currently support those features, but if you'd like us to add them please email info@gruntwork.io.
+## Multi Account CloudTrail Setup
+
+You can setup CloudTrail to send its logs to a central account by using the same S3 bucket to store the logs for each
+account. It is also highly recommended to use a KMS key from the central account to encrypt the logs. By using a KMS key
+managed by the central account, you can ensure the logs are made accessible even when the child account is closed.
+
+You can take the following steps to configure a multi account CloudTrail configuration with a shared S3 bucket and KMS
+key using this module. For the purposes of the example, we assume that we have the 4 AWS accounts 111111111111,
+222222222222, 333333333333, and 444444444444, and we want to store the CloudTrail logs from each account in an S3 bucket
+in account 111111111111.
+
+1. Create a KMS key in account 111111111111 with the following properties:
+    1. Allow administrative permissions in the account 111111111111.
+    1. Grant CloudTrail the ability to encrypt the logs with the key by granting it the `kms:GenerateDataKey` permission
+       in the KMS key policy. Note that to allow cross account access, you need to explicitly specify the ARNs of the
+       external account trails in the condition block for each account (222222222222, 333333333333, and 444444444444).
+       See [the AWS docs for more
+       details](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/create-kms-key-policy-for-cloudtrail.html#create-kms-key-policy-for-cloudtrail-encrypt).
+    1. You can use the [kms-master-key module](/modules/kms-master-key) to create the KMS key with this setting. See the
+       `kms-master-key` module block in the [cloudtrail-custom-key example](/examples/cloudtrail-custom-key) for an
+       example configuration.
+
+1. Create an S3 bucket in account 111111111111 with the following properties:
+    1. Grant cloudtrail the ability to put objects into the bucket for each of the child accounts. Note that this policy
+       will be added to the s3 bucket created in this module if you specify each account ID in
+       `var.external_aws_account_ids_with_write_access`. See [the AWS docs for more
+       details](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-set-bucket-policy-for-multiple-accounts.html)
+
+1. Configure CloudTrail in each of the accounts to use the KMS key and S3 bucket created in the above steps. You can do
+   this by setting the following variables:
+    - `s3_bucket_already_exists = true`
+    - `s3_bucket_name` to the bucket created above.
+    - `kms_key_already_exists = true`
+    - `kms_key_arn` to the ARN of the key created above.
+
 
 ## Gotchas
 

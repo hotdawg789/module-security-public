@@ -43,17 +43,16 @@ cd test/landingzone
 go test -v -timeout 45m -parallel 128
 ```
 
-**Note**: The automated tests for the `kms-master-key` and `cloudtrail` packages are disabled by default. That's because
-generating a KMS Master Key costs \$1/month, even if we delete it right after, which can add up quickly if we run this test
-often. To enable the test, you need to set the `RUN_KMS_TEST` or `RUN_CLOUDTRAIL_TEST` environment variables:
-
 **Note**: Some of the tests need to run against the Gruntwork LZ Test AWS Organization root account. Therefore you will also
 need to set the `AWS_ORGTEST_ACCESS_KEY_ID` and `AWS_ORGTEST_SECRET_ACCESS_KEY` environment variables. The logic that uses
 these variables is in `landingzone/test_helpers.go`.
 
+
+And to run the security tests:
+
 ```bash
 cd test/security
-RUN_KMS_TEST=true go test -v -timeout 45m -parallel 128
+go test -v -timeout 45m -parallel 128
 ```
 
 #### Run a specific test
