@@ -17,7 +17,7 @@ because we wish to create new disk partitions. The module docs explain [how the 
 To run this example, you need to do the following:
 
 1. If you are running this locally (versus in a CI environment), create a `terraform.tfvars` in this directory that contains
-   values for all the required variables in `terraform/vars.tf`. Place this file in *this* directory, not the `./terraform`
+   values for all the required variables in `terraform/variables.tf`. Place this file in *this* directory, not the `./terraform`
     directory.
 1. Run `./packer-build.sh`
  

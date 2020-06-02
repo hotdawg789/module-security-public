@@ -31,8 +31,8 @@ Any policies you provide must already exist or Terraform will throw an error.
 
 To try these templates out you must have Terraform installed:
 
-1. Open `vars.tf` and fill in any variables that don't have a default.
-1. Review the policies in `vars.tf` and decide which policies you would like to include for your group.
+1. Open `variables.tf` and fill in any variables that don't have a default.
+1. Review the policies in `variables.tf` and decide which policies you would like to include for your group.
 1. Lean on the example policy in `main.tf` to generate your own managed policies to attach to the group.
 1. Run `terraform init`
 1. Run `terraform apply` to create the IAM Groups.

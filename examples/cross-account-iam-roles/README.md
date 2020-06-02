@@ -19,7 +19,7 @@ those other accounts for users to actually be able to switch between accounts. S
 
 To try these templates out you must have Terraform installed:
 
-1. Open `vars.tf`, specify the environment variables mentioned at the top of the file, and fill in any variables that
+1. Open `variables.tf`, specify the environment variables mentioned at the top of the file, and fill in any variables that
    don't have a default.
 1. Run `terraform init` to instruct Terraform to perform initialization steps.
 1. Run `terraform apply` to create the IAM Roles.

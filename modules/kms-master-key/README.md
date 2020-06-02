@@ -21,7 +21,7 @@ Using the AWS API with KMS can be clumsy. For a more streamlined experience, try
 
 * See the [root README](/README.adoc) for instructions on using Terraform modules.
 * See the [kms-master-key example](/examples/kms-master-key) for an example.
-* See [vars.tf](./vars.tf) for all the variables you can set on this module.
+* See [variables.tf](./variables.tf) for all the variables you can set on this module.
 
 **Note**: This module creates a Master Key in KMS. Each Master Key costs $1/month, even if you delete it immediately
 after. So please be aware that using this module will cost you money!

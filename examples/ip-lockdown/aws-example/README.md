@@ -27,7 +27,7 @@ To build the AMIs:
 
 Running the Terraform Code
 
-1. Edit `vars.tf` and add your own values for: `aws_region` and `key_name`
+1. Edit `variables.tf` and add your own values for: `aws_region` and `key_name`
     1. `aws_region` - This is the AWS region where your EC2 instance will be created. Ex: `us-east-1`
     1. `key_name` - This is the name of the AWS key pair you will use to ssh to this EC2 instance. To create a new key pair see [this guide](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html?icmpid=docs_ec2_console#having-ec2-create-your-key-pair)
 1. Run `terraform init`

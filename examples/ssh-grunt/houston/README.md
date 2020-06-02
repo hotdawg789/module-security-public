@@ -21,7 +21,7 @@ To try these templates out you must have Terraform and Packer installed:
 1. Upload your public SSH Key to Houston.
 1. Build the AMI for `ssh-grunt` with Houston by following the
    [instructions in the packer folder](/examples/ssh-grunt/packer).
-1. Open `vars.tf`, set the environment variables specified at the top of the file, and fill in any other variables that
+1. Open `variables.tf`, set the environment variables specified at the top of the file, and fill in any other variables that
    don't have a default, including the ID of the AMI you built in the previous step.
 1. Run `terraform init`.
 1. Run `terraform apply`.

@@ -13,7 +13,7 @@ This example enables Config in a single region by creating an S3 bucket, an SNS 
 
 To try these templates out you must have Terraform installed:
 
-1. Open `vars.tf` and fill in any variables that don't have a default.
+1. Open `variables.tf` and fill in any variables that don't have a default.
 1. Run `terraform init` to instruct Terraform to perform initialization steps.
 1. Run `terraform plan` to confirm that Terraform will create what looks like a reasonable set of resources.
 1. Run `terraform apply` to enable Config.

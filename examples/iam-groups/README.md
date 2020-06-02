@@ -19,7 +19,7 @@ See the [iam-groups module](/modules/iam-groups) for additional details.
 
 To try these templates out you must have Terraform installed:
 
-1. Open `vars.tf` and fill in any variables that don't have a default.
+1. Open `variables.tf` and fill in any variables that don't have a default.
 1. Review the "custom IAM Groups" in `main.tf` and decide if you wish to keep or remove them. To remove them, delete
    the corresponding Terraform resources.
 1. Run `terraform init` 

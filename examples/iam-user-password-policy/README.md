@@ -16,7 +16,7 @@ See the [iam-user-password-policy module](/modules/iam-user-password-policy) for
 
 To try these templates out you must have Terraform installed:
 
-1. Open `vars.tf` and fill in any variables that don't have a default.
+1. Open `variables.tf` and fill in any variables that don't have a default.
 1. Review the hardcoded values in `main.tf`.
 1. Run `terraform init` to instruct Terraform to perform initialization steps.
 1. Run `terraform apply` to apply the password policy.
