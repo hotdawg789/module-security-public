@@ -86,6 +86,11 @@ making API calls to assume the IAM role (see [aws-auth](/modules/aws-auth)).
   `var.allow_billing_access_from_other_account_arns` will get full (read and write) access to the billing details for
   this account.
 
+* **allow-logs-access-from-other-accounts**: Users from the accounts in
+  `var.allow_logs_access_from_other_account_arns` will get read access to the logs in CloudTrail, AWS Config, and 
+  CloudWatch in this account. Since CloudTrail logs may be encrypted with a KMS CMK, if `var.cloudtrail_kms_key_arn` is 
+  set, these users will also get permissions to decrypt using this KMS CMK.
+
 * **allow-dev-access-from-other-accounts**: Users from the accounts in `var.allow_dev_access_from_other_account_arns`
   will get full (read and write) access to the services in this account specified in `var.dev_permitted_services`.
 

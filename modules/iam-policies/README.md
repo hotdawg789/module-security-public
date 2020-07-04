@@ -73,6 +73,10 @@ This module creates the following IAM Policy documents:
 
 - **billing:** provides read and write billing settings, but nothing else.
 
+- **logs:** provides read access to logs in CloudTrail, AWS Config, and CloudWatch. Since CloudTrail logs may be 
+  encrypted with a KMS CMK, if `var.cloudtrail_kms_key_arn` is set, these users will also get permissions to decrypt 
+  using this KMS CMK.
+
 - **developers:** provides whatever permissions are declared in `var.dev_permitted_services`.
   In addition, creates permissions for a personal S3 bucket named `<var.dev_permitted_services><iam-user-name>`.
 

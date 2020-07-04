@@ -47,6 +47,7 @@ This module optionally creates the following IAM Groups:
 
 - **full-access:** IAM Users in this group have full access to all resources in the AWS account.
 - **billing:** IAM Users in this group can read and write billing settings, but nothing else.
+- **logs:** IAM Users in this group can read logs in CloudTrail, AWS Config, and CloudWatch.
 - **developers:** IAM Users in this group have whatever permissions are declared in
   `var.iam_group_developers_permitted_services`. In addition, these IAM Users have rights to a personal S3 bucket
   named `<var.iam_group_developers_permitted_services><iam-user-name>`.
