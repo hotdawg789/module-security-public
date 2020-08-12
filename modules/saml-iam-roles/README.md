@@ -50,9 +50,12 @@ This module creates the following IAM roles (all optional):
   `var.allow_billing_access_from_saml_provider_arns` will get full (read and write) access to the billing details for
   this account.
 
+* **allow-support-access-from-saml**: Users authenticated by the SAML providers in
+  `var.allow_support_access_from_saml_provider_arns` will get access to AWS support for this account.
+
 * **allow-logs-access-from-saml**: Users authenticated by the SAML providers in
-  `var.allow_logs_access_from_saml_provider_arns` will get read access to the logs in CloudTrail, AWS Config, and 
-  CloudWatch for this account. Since CloudTrail logs may be encrypted with a KMS CMK, if `var.cloudtrail_kms_key_arn` is 
+  `var.allow_logs_access_from_saml_provider_arns` will get read access to the logs in CloudTrail, AWS Config, and
+  CloudWatch for this account. Since CloudTrail logs may be encrypted with a KMS CMK, if `var.cloudtrail_kms_key_arn` is
   set, these users will also get permissions to decrypt using this KMS CMK.
 
 * **allow-ssh-grunt-access-from-saml**: Users authenticated by the SAML providers in
